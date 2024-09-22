@@ -166,7 +166,13 @@ python = ["3.12"]
 # Inherit from the `test` env (and thus also the `default` env) to enable rigorous type checks and linting of both the
 # application logic and the unit tests.
 template = "test"
-dependencies = ["mypy~=1.11.2", "pydantic~=2.9.2", "ruff~=0.6.7"]
+dependencies = [
+  "mypy~=1.11.2",
+  "pre-commit~=3.8.0",
+  "pydantic~=2.9.2",
+  "ruff~=0.6.7",
+]
+post-install-commands = ["pre-commit install"]
 
 [tool.hatch.envs.lint.scripts]
 style = [
