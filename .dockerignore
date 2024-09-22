@@ -1,0 +1,13 @@
+# Ignore everything ...
+*
+
+# ... except for the requirements and the application logic.
+!/requirements.txt
+!/src
+
+# Just make sure to ignore unnecessary files inside the allowed directory/directories.
+**/*~
+**/*.log
+**/*.md
+**/__pycache__
+**/.DS_Store
