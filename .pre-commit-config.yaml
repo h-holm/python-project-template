@@ -24,6 +24,7 @@ repos:
         entry: hatch run lint:all
         language: system
         types_or: [python, pyi, jupyter]
+        exclude: src/python_project/__version__.py
 
   # # Ruff replaces black, flake8, autoflake, isort and more
   # - repo: https://github.com/charliermarsh/ruff-pre-commit
