@@ -1,5 +1,6 @@
 """Main entrypoint of a Python application that outputs whether the specified file is non-empty."""
 
+import enum
 import logging.config
 import sys
 from datetime import UTC, datetime
@@ -26,8 +27,23 @@ logging.config.fileConfig(Path(__file__).parents[0] / "logging.conf", disable_ex
 LOGGER = logging.getLogger()
 
 
-def main(file_path: Annotated[str, typer.Argument(help="The file path to check", envvar="FILE_PATH")]) -> None:
+class LogLevel(str, enum.Enum):
+    """Log level."""
+
+    CRITICAL = "critical"
+    ERROR = "error"
+    WARNING = "warning"
+    INFO = "info"
+    DEBUG = "debug"
+
+
+def main(
+    file_path: Annotated[Path, typer.Argument(help="The file path to check", envvar="FILE_PATH")],
+    log_level: Annotated[LogLevel, typer.Option(help="Log level")] = LogLevel.INFO,
+) -> None:
     """Log whether the input `file_path` is a non-empty file."""
+    LOGGER.setLevel(log_level.upper())
+
     # The timezone used for timestamps.
     tz = UTC
     start_timestamp = datetime.now(tz=tz)
