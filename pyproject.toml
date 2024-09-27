@@ -186,4 +186,4 @@ typing = [
   "echo \"VERSION: `mypy --version`\"",
   "mypy --install-types --non-interactive {args}",
 ]
-all = ["style", "typing"]
+lint = ["style", "typing"]

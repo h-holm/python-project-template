@@ -21,25 +21,7 @@ repos:
     hooks:
       - id: hatch-lint
         name: hatch-lint
-        entry: hatch run lint:all
+        entry: hatch run lint:lint
         language: system
         types_or: [python, pyi, jupyter]
         exclude: src/python_project/__version__.py
-
-  # # Ruff replaces black, flake8, autoflake, isort and more
-  # - repo: https://github.com/charliermarsh/ruff-pre-commit
-  #   rev: "v0.6.7" # Keep consistent with the Hatch config in the `pyproject.toml` file.
-  #   hooks:
-  #     - id: ruff
-  #     - id: ruff-format
-  #       args: [--check, --config, ./pyproject.toml]
-
-  # - repo: https://github.com/pre-commit/mirrors-mypy
-  #   rev: "v1.11.2" # Keep consistent with the Hatch config in the `pyproject.toml` file.
-  #   hooks:
-  #     - id: mypy
-  #       args: ["--install-types", "--non-interactive"]
-  #       additional_dependencies:
-  #         - pydantic~=2.9.1
-  #         - types-tabulate
-  #         - types-cachetools

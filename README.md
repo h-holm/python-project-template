@@ -30,10 +30,10 @@ hatch run test:test
 
 ### Formatting, Linting and Type Checking
 
-Run the `all` script of the "lint" Hatch environment to perform (1) formatting and linting using [`ruff`](https://github.com/astral-sh/ruff) and (2) static type checking using [`mypy`](https://github.com/python/mypy).
+Run the `lint` script of the "lint" Hatch environment to perform (1) formatting and linting using [`ruff`](https://github.com/astral-sh/ruff) and (2) static type checking using [`mypy`](https://github.com/python/mypy).
 
 ```shell
-hatch run lint:all
+hatch run lint:lint
 ```
 
 ### Publish a New Version
