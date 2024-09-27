@@ -36,18 +36,18 @@ raw-options = { version_scheme = "no-guess-dev" }
 # External Tools #
 ##################
 
-[tool.coverage.run]
-branch = true
-relative_files = true
-source = ["src/python_project"]
-omit = ["src/python_project/__version__.py", "tests/*"]
-
 [tool.coverage.paths]
 source = ["src/python_project"]
 
 [tool.coverage.report]
 exclude_lines = ["pragma: no cover", "if __name__ == .__main__.:"]
 skip_empty = true
+
+[tool.coverage.run]
+branch = true
+relative_files = true
+source = ["src/python_project"]
+omit = ["src/python_project/__version__.py", "tests/*"]
 
 [tool.mypy]
 check_untyped_defs = true
@@ -89,12 +89,12 @@ ignore = [
   "COM812", # "May cause conflicts when used with the formatter".
 ]
 
+[tool.ruff.lint.flake8-tidy-imports]
+ban-relative-imports = "all"
+
 [tool.ruff.lint.isort]
 lines-after-imports = 2
 known-first-party = ["python_project"]
-
-[tool.ruff.lint.flake8-tidy-imports]
-ban-relative-imports = "all"
 
 [tool.ruff.lint.per-file-ignores]
 "__init__.py" = ["D104"]
@@ -109,6 +109,9 @@ ban-relative-imports = "all"
   # Allow boolean-typed positional arguments in test function definitions.
   "FBT001",
 ]
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
 
 #######################
 # Default Environment #
@@ -150,7 +153,7 @@ debug = "cov --no-cov -s --pdb --pdbcls=IPython.core.debugger:Pdb {args}"
 no-cov = "cov --no-cov {args}"
 test = "pytest -v"
 # The `test-cov-xml` command can be used in CI to generate a coverage report in XML format, which is required by
-# certain third parties, such as the SonarQube code analysis services.
+# certain third parties, such as SonarQube code analysis services.
 test-cov-xml = "pytest --cov-report=xml"
 
 # By leveraging the Hatch matrix feature we can test against multiple Python versions.
