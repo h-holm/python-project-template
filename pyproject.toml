@@ -6,7 +6,7 @@
 authors = [{ name = "Firstname Lastname", email = "no-reply@email.com" }]
 classifiers = [
   "Programming Language :: Python",
-  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
   "Programming Language :: Python :: Implementation :: CPython",
 ]
 dependencies = []
@@ -15,7 +15,7 @@ dynamic = ["version"]
 license = { file = "LICENSE" }
 name = "python-project"
 readme = "README.md"
-requires-python = ">=3.12"
+requires-python = ">=3.13"
 
 [project.urls]
 Documentation = "https://github.com/h-holm/python-project"
@@ -76,7 +76,7 @@ include = ["src/**/*.py", "src/**/*.pyi", "tests/**/*.py", "tests/**/*.pyi"]
 exclude = ["src/python_project/__version__.py"]
 indent-width = 4
 line-length = 120
-target-version = "py312"
+target-version = "py313"
 
 [tool.ruff.lint]
 select = ["ALL"]
@@ -144,7 +144,7 @@ extra-dependencies = [
   "pytest~=8.3.3",
   "pytest-asyncio~=0.24.0",
   "pytest-cov~=5.0.0",
-  "pytest-mock~=3.13.0",
+  "pytest-mock~=3.14.0",
 ]
 
 [tool.hatch.envs.test.scripts]
@@ -159,7 +159,7 @@ test-cov-xml = "pytest --cov-report=xml"
 # By leveraging the Hatch matrix feature we can test against multiple Python versions.
 [[tool.hatch.envs.test.matrix]]
 template = ["test"]
-python = ["3.12"]
+python = ["3.13"]
 
 ####################
 # Lint Environment #
@@ -167,12 +167,13 @@ python = ["3.12"]
 
 [tool.hatch.envs.lint]
 extra-dependencies = [
-  "mypy~=1.11.2",
-  "pre-commit~=3.8.0",
+  "mypy~=1.12.1",
+  "pip~=24.2",         # To enable `mypy` to `pip install` stubs.
+  "pre-commit~=4.0.1",
   "pydantic~=2.9.2",
-  "ruff~=0.6.7",
+  "ruff~=0.7.0",
 ]
-post-install-commands = ["pre-commit install"]
+post-install-commands = ["hatch run lint:pre-commit install"]
 
 [tool.hatch.envs.lint.scripts]
 style = [
