@@ -6,7 +6,7 @@
 authors = [{ name = "Firstname Lastname", email = "no-reply@email.com" }]
 classifiers = [
   "Programming Language :: Python",
-  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
   "Programming Language :: Python :: Implementation :: CPython",
 ]
 dependencies = []
@@ -15,7 +15,7 @@ dynamic = ["version"]
 license = { file = "LICENSE" }
 name = "python-project"
 readme = "README.md"
-requires-python = ">=3.12"
+requires-python = ">=3.13"
 
 [project.urls]
 Documentation = "https://github.com/h-holm/python-project"
@@ -76,7 +76,7 @@ include = ["src/**/*.py", "src/**/*.pyi", "tests/**/*.py", "tests/**/*.pyi"]
 exclude = ["src/python_project/__version__.py"]
 indent-width = 4
 line-length = 120
-target-version = "py312"
+target-version = "py313"
 
 [tool.ruff.lint]
 select = ["ALL"]
@@ -159,7 +159,7 @@ test-cov-xml = "pytest --cov-report=xml"
 # By leveraging the Hatch matrix feature we can test against multiple Python versions.
 [[tool.hatch.envs.test.matrix]]
 template = ["test"]
-python = ["3.12"]
+python = ["3.13"]
 
 ####################
 # Lint Environment #
