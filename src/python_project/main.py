@@ -15,8 +15,7 @@ if not __package__:
     # Add the grandparent directory to `sys.path` to enable running all of the following:
     # - `python path/to/this/repo/src/python_project/main.py`   from anywhere,
     # - `hatch run python src/python_project/main.py`           from the root of this repo,
-    grandparent_dir = Path(__file__).parents[1]
-    sys.path.insert(0, str(grandparent_dir))
+    sys.path.insert(0, str(Path(__file__).parents[1]))
 
 
 from python_project.utils.utils import get_time_elapsed_string, is_non_empty_file
