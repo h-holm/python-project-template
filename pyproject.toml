@@ -209,4 +209,13 @@ typing = [
   "echo \"VERSION: `mypy --version`\"",
   "mypy --install-types --non-interactive {args}",
 ]
+# For use as a `pre-commit` hook, define a simpler `typing` script that (1) ignores missing imports
+# and (2) does not `--install-types`.
+simple-typing = [
+  "echo \"VERSION: `mypy --version`\"",
+  "mypy --ignore-missing-imports {args}",
+]
+# Define a `lint` script that runs full-scale style, formatting and type checks ...
 lint = ["style", "typing"]
+# ... and a simpler `simple-lint` script for use as a pre-commit hook.
+simple-lint = ["style", "simple-typing"]

@@ -20,8 +20,8 @@ repos:
   - repo: local
     hooks:
       - id: hatch-lint
-        name: hatch-lint
-        entry: hatch run lint:lint
+        name: hatch-simple-lint
+        entry: hatch run lint:simple-lint
         language: system
         types_or: [python, pyi, jupyter]
         exclude: src/python_project/__version__.py
