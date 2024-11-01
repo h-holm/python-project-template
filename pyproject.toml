@@ -3,11 +3,13 @@
 ####################
 
 [project]
-authors = [{ name = "Firstname Lastname", email = "no-reply@email.com" }]
+authors = [{ name = "Henrik Holm", email = "no-reply@email.com" }]
 classifiers = [
   "Programming Language :: Python",
+  "Programming Language :: Python :: 3",
   "Programming Language :: Python :: 3.13",
   "Programming Language :: Python :: Implementation :: CPython",
+  "Programming Language :: Python :: Implementation :: PyPy",
 ]
 dependencies = []
 description = "Python template project using the Hatch project manager."
@@ -28,6 +30,9 @@ Source = "https://github.com/h-holm/python-project"
 [tool.hatch]
 metadata.allow-direct-references = true
 
+[tool.hatch.env]
+requires = ["hatch-pip-compile~=1.11.3"]
+
 [tool.hatch.version]
 path = "src/python_project/__version__.py"
 raw-options = { version_scheme = "no-guess-dev" }
@@ -40,21 +45,21 @@ raw-options = { version_scheme = "no-guess-dev" }
 source = ["src/python_project"]
 
 [tool.coverage.report]
-exclude_lines = ["pragma: no cover", "if __name__ == .__main__.:"]
+exclude_lines = ["if __name__ == .__main__.:"]
 skip_empty = true
 
 [tool.coverage.run]
 branch = true
+omit = ["src/python_project/__version__.py", "tests/*"]
 relative_files = true
 source = ["src/python_project"]
-omit = ["src/python_project/__version__.py", "tests/*"]
 
 [tool.mypy]
 check_untyped_defs = true
 disallow_untyped_defs = true
+disallow_any_unimported = true
 files = ["src/python_project", "tests"]
-# Set to "silent" to not follow.
-follow_imports = "normal"
+follow_imports = "normal"               # Set to "silent" to not follow.
 no_implicit_optional = true
 plugins = ["pydantic.mypy"]
 pretty = true
@@ -68,11 +73,10 @@ addopts = "--cov=src/python_project --cov-report=term-missing --doctest-glob='*.
 asyncio_default_fixture_loop_scope = "function"
 asyncio_mode = "strict"
 minversion = "8.3.3"
-pythonpath = ["src/python_project"]
+pythonpath = ["src"]
 testpaths = ["tests"]
 
 [tool.ruff]
-include = ["src/**/*.py", "src/**/*.pyi", "tests/**/*.py", "tests/**/*.pyi"]
 exclude = ["src/python_project/__version__.py"]
 indent-width = 4
 line-length = 120
@@ -81,20 +85,21 @@ target-version = "py313"
 [tool.ruff.lint]
 select = ["ALL"]
 ignore = [
-  "E203",   # Whitespace before ":". Needed for `ruff format`.
-  "ISC001", # Causes unexpected behaviour with formatter.
-  "G004",   # To allow logging statements to use f-strings.
-  "D203",   # If enabled, this requires one blank line before Class docstrings. Conflicts with D211.
-  "D213",   # Conflicts with D212.
-  "COM812", # "May cause conflicts when used with the formatter".
+  "COM812",  # "May cause conflicts when used with the formatter".
+  "CPY001",  # Requires copyright notices at the top of files.
+  "D203",    # If enabled, this requires one blank line before Class docstrings. Conflicts with D211.
+  "D213",    # Conflicts with D212.
+  "ISC001",  # Causes unexpected behaviour with formatter.
+  "G004",    # Disallows f-strings in logging statements.
+  "PLC1901", # Disallows comparing to the empty string ("").
 ]
 
 [tool.ruff.lint.flake8-tidy-imports]
 ban-relative-imports = "all"
 
 [tool.ruff.lint.isort]
-lines-after-imports = 2
 known-first-party = ["python_project"]
+lines-after-imports = 2
 
 [tool.ruff.lint.per-file-ignores]
 "__init__.py" = ["D104"]
@@ -113,14 +118,28 @@ known-first-party = ["python_project"]
 [tool.ruff.lint.pydocstyle]
 convention = "google"
 
+######################
+# Hatch Environments #
+######################
+
+# "Base" env to ensure the same Python version is used across all Hatch envs. Note that this env is not supposed to be
+# used directly, but rather as a template for other envs.
+[tool.hatch.envs.base]
+python = "3.13"
+# Skip (local) installation of the project itself. This assumes the project is not supposed to be packaged as a Python
+# egg or similar.
+skip-install = true
+template = "base"
+
+[tool.hatch.envs.base.scripts]
+upgrade-all = "PIP_COMPILE_UPGRADE=1 hatch env run --env {env_name} -- python --version"
+upgrade-pkg = "PIP_COMPILE_UPGRADE_PACKAGE='{args}' hatch env run --env {env_name} -- python --version"
+
 #######################
 # Default Environment #
 #######################
 
-[tool.hatch.env]
-requires = ["hatch-pip-compile~=1.11.3"]
-
-# Default environment with production dependencies.
+# Default environment used by Hatch if no other env is explicitly specified.
 [tool.hatch.envs.default]
 dependencies = ["typer~=0.12.5"]
 installer = "uv"
@@ -128,11 +147,8 @@ pip-compile-constraint = "default" # Keep locks between default and other enviro
 pip-compile-hashes = true
 pip-compile-resolver = "uv"
 pip-compile-installer = "uv"
+template = "base"
 type = "pip-compile"
-
-[tool.hatch.envs.default.scripts]
-upgrade-all = "PIP_COMPILE_UPGRADE=1 hatch env run --env {env_name} -- python --version"
-upgrade-pkg = "PIP_COMPILE_UPGRADE_PACKAGE='{args}' hatch env run --env {env_name} -- python --version"
 
 ####################
 # Test Environment #
@@ -143,13 +159,13 @@ upgrade-pkg = "PIP_COMPILE_UPGRADE_PACKAGE='{args}' hatch env run --env {env_nam
 extra-dependencies = [
   "pytest~=8.3.3",
   "pytest-asyncio~=0.24.0",
-  "pytest-cov~=5.0.0",
+  "pytest-cov~=6.0.0",
   "pytest-mock~=3.14.0",
 ]
 
 [tool.hatch.envs.test.scripts]
 cov = "pytest --cov-report=term-missing --cov-config=pyproject.toml --cov=src/python_project --cov=tests {args}"
-debug = "cov --no-cov -s --pdb --pdbcls=IPython.core.debugger:Pdb {args}"
+debug = "pytest --pdb"
 no-cov = "cov --no-cov {args}"
 test = "pytest -v"
 # The `test-cov-xml` command can be used in CI to generate a coverage report in XML format, which is required by
@@ -167,22 +183,26 @@ python = ["3.13"]
 
 [tool.hatch.envs.lint]
 extra-dependencies = [
-  "mypy~=1.12.1",
-  "pip~=24.2",         # To enable `mypy` to `pip install` stubs.
+  "mypy~=1.13.0",
+  "pip~=24.3.1",       # To enable `mypy` to `pip install` stubs.
   "pre-commit~=4.0.1",
   "pydantic~=2.9.2",
-  "ruff~=0.7.0",
+  "pytest~=8.3.3",
+  "ruff~=0.7.2",
 ]
 post-install-commands = ["hatch run lint:pre-commit install"]
 
 [tool.hatch.envs.lint.scripts]
+# Check the code style and formatting.
 style = [
   "echo \"VERSION: `ruff --version`\"",
   "ruff check {args:.}",
   "ruff format --check {args:.}",
 ]
+# Fix code style and formatting issues where possible.
 # Run `style` at the end to generate feedback on non-fixable issues.
 fix = ["ruff format {args:.}", "ruff check --fix {args:.}", "style"]
+# Perform static type checking.
 typing = [
   "echo \"VERSION: `mypy --version`\"",
   "mypy --install-types --non-interactive {args}",
