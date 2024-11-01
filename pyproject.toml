@@ -59,7 +59,8 @@ check_untyped_defs = true
 disallow_untyped_defs = true
 disallow_any_unimported = true
 files = ["src/python_project", "tests"]
-follow_imports = "normal"               # Set to "silent" to not follow.
+# Set to "silent" to not follow.
+follow_imports = "normal"
 no_implicit_optional = true
 plugins = ["pydantic.mypy"]
 pretty = true
@@ -184,7 +185,8 @@ python = ["3.13"]
 [tool.hatch.envs.lint]
 extra-dependencies = [
   "mypy~=1.13.0",
-  "pip~=24.3.1",       # To enable `mypy` to `pip install` stubs.
+  # To enable `mypy` to `pip install` stubs.
+  "pip~=24.3.1",
   "pre-commit~=4.0.1",
   "pydantic~=2.9.2",
   "pytest~=8.3.3",
