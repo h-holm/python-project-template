@@ -1,0 +1,19 @@
+{
+    "recommendations": [
+        "charliermarsh.ruff",
+        "christian-kohler.path-intellisense",
+        "davidanson.vscode-markdownlint",
+        "editorconfig.editorconfig",
+        "esbenp.prettier-vscode",
+        "matangover.mypy",
+        "ms-python.python",
+        "ms-python.vscode-pylance",
+        "njpwerner.autodocstring",
+        "redhat.vscode-yaml",
+        "ryanluker.vscode-coverage-gutters",
+        "shardulm94.trailing-spaces",
+        "streetsidesoftware.code-spell-checker",
+        "tamasfe.even-better-toml",
+        "viktorzetterstrom.non-breaking-space-highlighter"
+    ]
+}
