@@ -17,10 +17,10 @@ defaults:
     shell: bash
 
 jobs:
-  # Run the CodeQL Vulnerability Scan workflow.
-  vulnerability-scan:
-    name: CodeQL Vulnerability Scan
-    uses: ./.github/workflows/codeql-vulnerability-scan.yaml
+  # Run the CodeQL Analysis workflow.
+  codeql-analysis:
+    name: CodeQL Analysis
+    uses: ./.github/workflows/codeql-analysis.yaml
     permissions:
       actions: read
       contents: read
@@ -39,7 +39,7 @@ jobs:
   # Build and push a container image to the GCP Artifact Registry.
   build-and-push-image:
     name: Build and Push Image
-    needs: [vulnerability-scan, unit-tests, lint-and-type-check]
+    needs: [codeql-analysis, unit-tests, lint-and-type-check]
     environment: ${{ inputs.GITHUB_ENVIRONMENT }}
     env:
       ARTIFACT_REGISTRY_HOSTNAME: "${{ secrets.GCP_LOCATION }}-docker.pkg.dev"
@@ -63,7 +63,7 @@ jobs:
         uses: google-github-actions/auth@v2
         with:
           service_account: ${{ secrets.GCP_CI_SERVICE_ACCOUNT }}
-          workload_identity_provider: ${{ vars.GCP_WIF_PROVIDER }}
+          workload_identity_provider: ${{ secrets.GCP_WORKLOAD_IDENTITY_PROVIDER }}
           token_format: access_token
 
       - name: Log In to Artifact Registry
