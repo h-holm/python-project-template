@@ -36,9 +36,9 @@ Run the `lint` script of the "lint" Hatch environment to perform (1) formatting 
 hatch run lint:lint
 ```
 
-### Publish a New Version
+### Bumping the Version
 
-Run either of the following commands to bump the version and create a commit and associated tag:
+Run either of the following commands to bump the version:
 
 ```shell
 hatch version patch
@@ -52,7 +52,11 @@ hatch version minor
 hatch version major
 ```
 
-Your default Git text editor will open so you can add information about the release.
+Commit the updated [\_\_version\_\_.py](./src/python_project/__version__.py) script to version control before creating a `git` tag. Ensure the tag has the same name as the (now bumped) version:
+
+```shell
+git tag -a $(hatch version) -m 'Descriptive tag message'
+```
 
 ## License
 
