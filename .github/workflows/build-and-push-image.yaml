@@ -37,7 +37,6 @@ jobs:
       ARTIFACT_REGISTRY_HOSTNAME: "${{ secrets.GCP_LOCATION }}-docker.pkg.dev"
       ARTIFACT_REGISTRY_URL: "${{ secrets.GCP_PROJECT_ID }}/${{ secrets.GCP_ARTIFACT_REGISTRY_NAME }}"
       CI_SERVICE_ACCOUNT_EMAIL: "${{ vars.GCP_CI_SERVICE_ACCOUNT_NAME }}@${{ secrets.GCP_PROJECT_ID }}.iam.gserviceaccount.com"
-      REPO_NAME: "${{ github.event.repository.name }}"
 
     # The `gcp-auth` step requires these permissions to read and pass tokens.
     permissions:
@@ -70,13 +69,13 @@ jobs:
         id: generate-tags-and-labels
         uses: docker/metadata-action@v5
         with:
-          images: ${{ env.ARTIFACT_REGISTRY_HOSTNAME }}/${{ env.ARTIFACT_REGISTRY_URL }}/${{ env.REPO_NAME }}
+          images: ${{ env.ARTIFACT_REGISTRY_HOSTNAME }}/${{ env.ARTIFACT_REGISTRY_URL }}/${{ github.event.repository.name }}
           tags: |
             type=ref,event=pr
             type=sha,format=short
             type=sha,format=long
           labels: |
-            org.opencontainers.image.title=${{ env.REPO_NAME }}
+            org.opencontainers.image.title=${{ github.event.repository.name }}
 
       - name: Build and Push Image
         uses: docker/build-push-action@v6
