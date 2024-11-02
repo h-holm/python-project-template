@@ -26,6 +26,9 @@ logging.config.fileConfig(Path(__file__).parents[0] / "logging.conf", disable_ex
 LOGGER = logging.getLogger()
 TIMESTAMP_FORMAT = "%Y-%m-%d %H:%M:%S"
 
+# Set up the `typer` app.
+app = typer.Typer()
+
 
 class LogLevel(str, enum.Enum):
     """Log level."""
@@ -37,6 +40,7 @@ class LogLevel(str, enum.Enum):
     DEBUG = "debug"
 
 
+@app.command()
 def main(
     file_path: Annotated[Path, typer.Argument(help="The file path to check", envvar="FILE_PATH")],
     log_level: Annotated[LogLevel, typer.Option(help="Log level")] = LogLevel.INFO,
@@ -56,4 +60,4 @@ def main(
 
 
 if __name__ == "__main__":
-    typer.run(main)
+    app()
