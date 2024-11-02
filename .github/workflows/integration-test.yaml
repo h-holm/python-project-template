@@ -73,7 +73,8 @@ jobs:
     env:
       ARTIFACT_REGISTRY_HOSTNAME: "${{ secrets.GCP_LOCATION }}-docker.pkg.dev"
       ARTIFACT_REGISTRY_URL: "${{ secrets.GCP_PROJECT_ID }}/${{ secrets.GCP_ARTIFACT_REGISTRY_NAME }}"
-      CI_SERVICE_ACCOUNT_EMAIL: "${{ vars.GCP_CI_SERVICE_ACCOUNT_NAME }}@${{ secrets.GCP_PROJECT_ID }}.iam.gserviceaccount.com"
+      CI_SERVICE_ACCOUNT_EMAIL: "${{ secrets.GCP_CI_SERVICE_ACCOUNT_NAME }}@${{ secrets.GCP_PROJECT_ID }}.iam.gserviceaccount.com"
+      RUNTIME_SERVICE_ACCOUNT_EMAIL: "${{ secrets.GCP_RUNTIME_SERVICE_ACCOUNT_NAME }}@${{ secrets.GCP_PROJECT_ID }}.iam.gserviceaccount.com"
 
     # The `gcp-auth` step requires these permissions to read and pass tokens.
     permissions:
@@ -100,6 +101,7 @@ jobs:
         run: |-
           gcloud run jobs deploy "${{ github.event.repository.name }}-integration-test" \
             --image "${{ env.ARTIFACT_REGISTRY_HOSTNAME }}/${{ env.ARTIFACT_REGISTRY_URL }}/${{ github.event.repository.name }}:sha-${{ github.sha }}" \
+            --service-account "${{ env.RUNTIME_SERVICE_ACCOUNT_EMAIL }}" \
             --max-retries 3 \
             --task-timeout 5m \
             --parallelism 1 \
