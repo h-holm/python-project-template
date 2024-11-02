@@ -31,13 +31,13 @@ jobs:
   build-and-push-image:
     name: Build and Push Image
     needs: [unit-tests, lint-and-type-check]
+    runs-on: ubuntu-latest
     environment: ${{ inputs.GITHUB_ENVIRONMENT }}
     env:
       ARTIFACT_REGISTRY_HOSTNAME: "${{ secrets.GCP_LOCATION }}-docker.pkg.dev"
       ARTIFACT_REGISTRY_URL: "${{ secrets.GCP_PROJECT_ID }}/${{ secrets.GCP_ARTIFACT_REGISTRY_NAME }}"
       CI_SERVICE_ACCOUNT_EMAIL: "${{ vars.GCP_CI_SERVICE_ACCOUNT_NAME }}@${{ secrets.GCP_PROJECT_ID }}.iam.gserviceaccount.com"
       REPO_NAME: "${{ github.event.repository.name }}"
-    runs-on: ubuntu-latest
 
     # The `gcp-auth` step requires these permissions to read and pass tokens.
     permissions:
