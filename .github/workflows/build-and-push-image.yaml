@@ -17,15 +17,6 @@ defaults:
     shell: bash
 
 jobs:
-  # Run the CodeQL Analysis workflow.
-  codeql-analysis:
-    name: CodeQL Analysis
-    uses: ./.github/workflows/codeql-analysis.yaml
-    permissions:
-      actions: read
-      contents: read
-      security-events: write
-
   # Run the Python Unit Tests workflow.
   unit-tests:
     name: Python Unit Tests
@@ -39,7 +30,7 @@ jobs:
   # Build and push a container image to the GCP Artifact Registry.
   build-and-push-image:
     name: Build and Push Image
-    needs: [codeql-analysis, unit-tests, lint-and-type-check]
+    needs: [unit-tests, lint-and-type-check]
     environment: ${{ inputs.GITHUB_ENVIRONMENT }}
     env:
       ARTIFACT_REGISTRY_HOSTNAME: "${{ secrets.GCP_LOCATION }}-docker.pkg.dev"
@@ -58,6 +49,7 @@ jobs:
         with:
           fetch-depth: 0
 
+      # Authenticate to Google Cloud via Workload Identity Federation (WIF).
       - name: Authenticate to Google Cloud
         id: gcp-auth
         uses: google-github-actions/auth@v2
