@@ -1,0 +1,27 @@
+{
+    "cSpell.words": [
+        "editorconfig",
+        "flake8",
+        "gcloud",
+        "github",
+        "git",
+        "gitignore",
+        "isort",
+        "mypy",
+        "oidc",
+        "pytest",
+        "ruff",
+        "typer"
+    ],
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.formatOnSave": true,
+    "[markdown]": {
+        "editor.defaultFormatter": "DavidAnson.vscode-markdownlint"
+    },
+    "[python]": {
+        "editor.defaultFormatter": "charliermarsh.ruff"
+    },
+    "[toml]": {
+        "editor.defaultFormatter": "tamasfe.even-better-toml"
+    }
+}

@@ -24,6 +24,7 @@ from python_project.utils.utils import get_time_elapsed_string, is_non_empty_fil
 # Set up logging.
 logging.config.fileConfig(Path(__file__).parents[0] / "logging.conf", disable_existing_loggers=False)
 LOGGER = logging.getLogger()
+TIMESTAMP_FORMAT = "%Y-%m-%d %H:%M:%S"
 
 
 class LogLevel(str, enum.Enum):
@@ -43,16 +44,14 @@ def main(
     """Log whether the input `file_path` is a non-empty file."""
     LOGGER.setLevel(log_level.upper())
 
-    # The timezone used for timestamps.
-    tz = UTC
-    start_timestamp = datetime.now(tz=tz)
-    LOGGER.info(f"Script started at: {start_timestamp} ({tz}).")
+    start_timestamp = datetime.now(tz=UTC)
+    LOGGER.info(f"Script started at: {start_timestamp.strftime(TIMESTAMP_FORMAT)} ({UTC}).")
 
     LOGGER.info(f"{is_non_empty_file(file_path)=}")
 
-    end_timestamp = datetime.now(tz=tz)
+    end_timestamp = datetime.now(tz=UTC)
     time_elapsed_string = get_time_elapsed_string(end_timestamp - start_timestamp)
-    LOGGER.info(f"Script finished at {end_timestamp} ({tz}).")
+    LOGGER.info(f"Script finished at {end_timestamp.strftime(TIMESTAMP_FORMAT)} ({UTC}).")
     LOGGER.info(f"Time elapsed: {time_elapsed_string}.")
 
 

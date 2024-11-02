@@ -9,7 +9,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 COPY ./src ./
 
-CMD [ "python", "./python_project/main.py" ]
+ENTRYPOINT [ "python", "./python_project/main.py" ]
 
 LABEL name="python-project"
 LABEL maintainer="no-reply@email.com"

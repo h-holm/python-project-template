@@ -1,0 +1,87 @@
+name: Build and Push Container Image
+
+on:
+  # Allow this workflow to be called from other workflows.
+  workflow_call:
+    # To allow this re-usable workflow to read secrets from the correct GitHub environment when called from another
+    # workflow, use a `workflow_call.inputs`-based approach for the setting the GitHub environment.
+    inputs:
+      GITHUB_ENVIRONMENT:
+        description: 'The GitHub environment to use'
+        type: string
+        required: true
+        default: ''
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  # Run the Python Unit Tests workflow.
+  unit-tests:
+    name: Python Unit Tests
+    uses: ./.github/workflows/unit-tests.yaml
+
+  # Run the Python formatting, linting and static type checking.
+  lint-and-type-check:
+    name: Linting and Type Checking
+    uses: ./.github/workflows/lint-and-type-check.yaml
+
+  # Build and push a container image to the GCP Artifact Registry.
+  build-and-push-image:
+    name: Build and Push Image
+    needs: [unit-tests, lint-and-type-check]
+    runs-on: ubuntu-latest
+    environment: ${{ inputs.GITHUB_ENVIRONMENT }}
+    env:
+      ARTIFACT_REGISTRY_HOSTNAME: "${{ secrets.GCP_LOCATION }}-docker.pkg.dev"
+      ARTIFACT_REGISTRY_URL: "${{ secrets.GCP_PROJECT_ID }}/${{ secrets.GCP_ARTIFACT_REGISTRY_NAME }}"
+      CI_SERVICE_ACCOUNT_EMAIL: "${{ secrets.GCP_CI_SERVICE_ACCOUNT_NAME }}@${{ secrets.GCP_PROJECT_ID }}.iam.gserviceaccount.com"
+
+    # The `gcp-auth` step requires these permissions to read and pass tokens.
+    permissions:
+      contents: read
+      id-token: write
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      # Authenticate to Google Cloud via Workload Identity Federation (WIF).
+      - name: Authenticate to Google Cloud
+        id: gcp-auth
+        uses: google-github-actions/auth@v2
+        with:
+          service_account: ${{ env.CI_SERVICE_ACCOUNT_EMAIL }}
+          workload_identity_provider: ${{ secrets.GCP_WORKLOAD_IDENTITY_PROVIDER }}
+          token_format: access_token
+
+      - name: Log In to Artifact Registry
+        uses: docker/login-action@v3
+        with:
+          username: oauth2accesstoken
+          password: ${{ steps.gcp-auth.outputs.access_token }}
+          registry: ${{ env.ARTIFACT_REGISTRY_HOSTNAME }}
+
+      - name: Generate Tags and Labels
+        id: generate-tags-and-labels
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ env.ARTIFACT_REGISTRY_HOSTNAME }}/${{ env.ARTIFACT_REGISTRY_URL }}/${{ github.event.repository.name }}
+          tags: |
+            type=ref,event=pr
+            type=sha,format=short
+            type=sha,format=long
+          labels: |
+            org.opencontainers.image.title=${{ github.event.repository.name }}
+
+      - name: Build and Push Image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: Dockerfile
+          tags: ${{ steps.generate-tags-and-labels.outputs.tags }}
+          labels: ${{ steps.generate-tags-and-labels.outputs.labels }}
+          push: true
