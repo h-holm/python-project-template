@@ -45,7 +45,7 @@ raw-options = { version_scheme = "no-guess-dev" }
 source = ["src/python_project"]
 
 [tool.coverage.report]
-exclude_lines = ["if __name__ == .__main__.:"]
+exclude_lines = ["pragma: no cover", "if __name__ == .__main__.:"]
 skip_empty = true
 
 [tool.coverage.run]
