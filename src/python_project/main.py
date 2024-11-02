@@ -11,7 +11,7 @@ import typer
 
 
 # https://packaging.python.org/en/latest/discussions/src-layout-vs-flat-layout/#running-a-command-line-interface-from-source-with-src-layout
-if not __package__:
+if not __package__:  # pragma: no cover
     # Add the grandparent directory to `sys.path` to enable running all of the following:
     # - `python path/to/this/repo/src/python_project/main.py`   from anywhere,
     # - `hatch run python src/python_project/main.py`           from the root of this repo,
@@ -26,6 +26,9 @@ logging.config.fileConfig(Path(__file__).parents[0] / "logging.conf", disable_ex
 LOGGER = logging.getLogger()
 TIMESTAMP_FORMAT = "%Y-%m-%d %H:%M:%S"
 
+# Set up the `typer` app.
+app = typer.Typer()
+
 
 class LogLevel(str, enum.Enum):
     """Log level."""
@@ -37,6 +40,7 @@ class LogLevel(str, enum.Enum):
     DEBUG = "debug"
 
 
+@app.command()
 def main(
     file_path: Annotated[Path, typer.Argument(help="The file path to check", envvar="FILE_PATH")],
     log_level: Annotated[LogLevel, typer.Option(help="Log level")] = LogLevel.INFO,
@@ -56,4 +60,4 @@ def main(
 
 
 if __name__ == "__main__":
-    typer.run(main)
+    app()

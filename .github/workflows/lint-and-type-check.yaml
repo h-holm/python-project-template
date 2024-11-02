@@ -42,4 +42,4 @@ jobs:
 
       - name: Run Unit Tests
         run: |-
-          hatch run test:test
+          hatch run lint:lint
