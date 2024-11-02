@@ -64,7 +64,7 @@ jobs:
         with:
           username: oauth2accesstoken
           password: ${{ steps.gcp-auth.outputs.access_token }}
-          registry: ${{ env.ARTIFACT_REGISTRY_URL }}
+          registry: ${{ env.ARTIFACT_REGISTRY_HOSTNAME }}
 
       - name: Generate Tags and Labels
         id: generate-tags-and-labels
