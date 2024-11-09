@@ -142,7 +142,7 @@ upgrade-pkg = "PIP_COMPILE_UPGRADE_PACKAGE='{args}' hatch env run --env {env_nam
 
 # Default environment used by Hatch if no other env is explicitly specified.
 [tool.hatch.envs.default]
-dependencies = ["typer~=0.12.5"]
+dependencies = ["typer~=0.13.0"]
 installer = "uv"
 pip-compile-constraint = "default" # Keep locks between default and other environments consistent.
 pip-compile-hashes = true
@@ -190,7 +190,7 @@ extra-dependencies = [
   "pre-commit~=4.0.1",
   "pydantic~=2.9.2",
   "pytest~=8.3.3",
-  "ruff~=0.7.2",
+  "ruff~=0.7.3",
 ]
 post-install-commands = ["hatch run lint:pre-commit install"]
 

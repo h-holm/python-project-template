@@ -1,5 +1,6 @@
 {
     "cSpell.words": [
+        "codeql",
         "editorconfig",
         "flake8",
         "gcloud",
@@ -9,6 +10,7 @@
         "isort",
         "mypy",
         "oidc",
+        "pyproject",
         "pytest",
         "ruff",
         "typer"
