@@ -1,6 +1,10 @@
 # Python Project Template
 
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
 A GitHub template repo for a containerized Python application.
+
+## Features ✅
 
 * [Hatch](https://hatch.pypa.io/latest) is used to manage the development environments and production build.
 * Primary dependencies and configurations are handled in the [pyproject.toml](./pyproject.toml) file.
