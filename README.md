@@ -36,19 +36,16 @@ Ensure [Hatch](https://hatch.pypa.io/latest) is [installed](https://hatch.pypa.i
 
 ### Running the Code
 
-Run the [main.py](./src/python_project/main.py) entrypoint via the default Hatch environment with the `--help` flag for an explanation to the application logic:
+Run the [main.py](./src/python_project/main.py) entrypoint with the `--help` flag for an explanation to the application logic:
 
 ```shell
-hatch run python src/python_project/main.py --help
-```
-
-```shell
+hatch run python src/python_project/main.py --help          # Uses the "default" Hatch environment.
 hatch run default:python src/python_project/main.py --help  # Equivalent to not specifying "default:".
 ```
 
 ### Unit Tests
 
-Run the `test` script of the "test" Hatch environment to execute the unit tests and generate a coverage report using [`pytest`](https://docs.pytest.org/en/stable).
+Run the `test` script of the "test" Hatch environment to execute the [`pytest`](https://docs.pytest.org/en/stable)-backed unit tests and generate a [coverage](https://coverage.readthedocs.io/en/7.6.7) report:
 
 ```shell
 hatch run test:test
