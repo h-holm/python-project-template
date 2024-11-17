@@ -6,20 +6,25 @@ A GitHub template repo for a containerized Python application.
 
 ## Features ✅
 
-* [Hatch](https://hatch.pypa.io/latest) is used to manage the development environments and production build.
-* Primary dependencies and configurations are handled in the [pyproject.toml](./pyproject.toml) file.
-* All (sub-)dependencies are locked via `requirements.txt` files using [`hatch-pip-compile`](https://github.com/juftin/hatch-pip-compile).
-* Hatch is configured to automatically set up [`pre-commit` hooks](https://github.com/pre-commit/pre-commit) that are synced with the `lint` Hatch environment.
-* The application logic is defined under [src/python_project](src/python_project).
-* Logging is configured in a single [logging.conf](./src/python_project/logging.conf) file.
-* Optionally, uniform formatting can further be ensured via the [.editorconfig](./.editorconfig) and [.vscode](./.vscode) configs.
+* Seamless environment management via [Hatch](https://hatch.pypa.io/latest)
+* Lightning-fast dependency resolution via [uv](https://github.com/astral-sh/uv)
+* Primary dependencies and tooling configuration in the [PEP](https://peps.python.org/pep-0621)-recommended [pyproject.toml](./pyproject.toml) file
+* (Sub-)dependency locking in `requirements.txt` files via [hatch-pip-compile](https://github.com/juftin/hatch-pip-compile)
+* Linting and formatting using [ruff](https://github.com/astral-sh/ruff)
+* Static type checking using [mypy](https://github.com/python/mypy)
+* [pytest](https://docs.pytest.org) for unit tests with [coverage](https://coverage.readthedocs.io/en/7.6.7)-based reporting
+* Automatic set up of [pre-commit](https://github.com/pre-commit/pre-commit) hooks via the `lint` Hatch environment
+* [./src layout](https://packaging.python.org/en/latest/discussions/src-layout-vs-flat-layout) to separate application logic from tests and project metadata
+* Sane logging configured in a single [logging.conf](./src/python_project/logging.conf) file
+* Optional quality-of-life add-ons:
+  * (further) enforcing of uniform formatting via an [.editorconfig](./.editorconfig)
+  * recommended [VS Code](https://code.visualstudio.com) settings and extensions through a [.vscode](./.vscode) subdirectory
+  * a [Dev Container](https://code.visualstudio.com/docs/devcontainers/containers)-based development environment
 
-The repository contains an example [GitHub Actions CI pipeline](./.github/workflows/) that:
+The repository contains an example [GitHub Actions](./.github/workflows/) CI pipeline that:
 
-* runs [`ruff`](https://github.com/astral-sh/ruff)-based linting and formatting,
-* runs [`mypy`](https://github.com/python/mypy)-based static type checking,
-* runs [`pytest`](https://docs.pytest.org)-based unit testing,
-* performs a CodeQL vulnerability scan,
+* runs [ruff](https://github.com/astral-sh/ruff)-based linting and formatting, [mypy](https://github.com/python/mypy)-based static type checking, [pytest](https://docs.pytest.org)-based unit testing,
+* performs a [CodeQL](https://codeql.github.com) vulnerability scan,
 * builds and pushes a well-labeled container image to [Google Cloud Artifact Registry](https://cloud.google.com/artifact-registry/docs),
 * executes a simple integration test on [Google Cloud Run](https://cloud.google.com/run?hl=en).
 
@@ -31,19 +36,16 @@ Ensure [Hatch](https://hatch.pypa.io/latest) is [installed](https://hatch.pypa.i
 
 ### Running the Code
 
-Run the [main.py](./src/python_project/main.py) entrypoint via the default Hatch environment with the `--help` flag for an explanation to the application logic:
+Run the [main.py](./src/python_project/main.py) entrypoint with the `--help` flag for an explanation to the application logic:
 
 ```shell
-hatch run python src/python_project/main.py --help
-```
-
-```shell
+hatch run python src/python_project/main.py --help          # Uses the "default" Hatch environment.
 hatch run default:python src/python_project/main.py --help  # Equivalent to not specifying "default:".
 ```
 
 ### Unit Tests
 
-Run the `test` script of the "test" Hatch environment to execute the unit tests and generate a coverage report using [`pytest`](https://docs.pytest.org/en/stable).
+Run the `test` script of the "test" Hatch environment to execute the [`pytest`](https://docs.pytest.org/en/stable)-backed unit tests and generate a [coverage](https://coverage.readthedocs.io/en/7.6.7) report:
 
 ```shell
 hatch run test:test
