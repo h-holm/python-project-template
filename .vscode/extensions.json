@@ -6,6 +6,7 @@
         "editorconfig.editorconfig",
         "esbenp.prettier-vscode",
         "matangover.mypy",
+        "ms-azuretools.vscode-docker",
         "ms-python.python",
         "ms-python.vscode-pylance",
         "njpwerner.autodocstring",
