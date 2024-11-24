@@ -31,9 +31,9 @@ A GitHub template repo for a containerized Python application.
 
 The repository contains an example [GitHub Actions](./.github/workflows/) CI pipeline that:
 
-* runs [ruff](https://github.com/astral-sh/ruff)-based linting and formatting, [mypy](https://github.com/python/mypy)-based static type checking, [pytest](https://docs.pytest.org)-based unit testing,
-* performs a [CodeQL](https://codeql.github.com) vulnerability scan,
-* builds and pushes a well-labeled container image to [Google Cloud Artifact Registry](https://cloud.google.com/artifact-registry/docs),
+* runs [ruff](https://github.com/astral-sh/ruff)-based linting and formatting, [mypy](https://github.com/python/mypy)-based static type checking, and [pytest](https://docs.pytest.org)-based unit testing;
+* performs a [CodeQL](https://codeql.github.com) vulnerability scan;
+* builds and pushes a well-labeled container image to [Google Cloud Artifact Registry](https://cloud.google.com/artifact-registry/docs);
 * executes a simple integration test on [Google Cloud Run](https://cloud.google.com/run?hl=en).
 
 ## Requirements
