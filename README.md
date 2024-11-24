@@ -1,6 +1,14 @@
 # Python Project Template
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Python 3.13](https://img.shields.io/badge/python-3.13-blue.svg)](https://docs.python.org/3/whatsnew/3.13.html)
+[![Hatch](https://img.shields.io/badge/%F0%9F%A5%9A-Hatch-4051b5.svg)](https://github.com/pypa/hatch)
+[![Ruff](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json)](https://github.com/astral-sh/ruff)
+[![Mypy](https://img.shields.io/badge/type%20checked-mypy-039dfc)](https://github.com/python/mypy)
+[![pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit&logoColor=white)](https://github.com/pre-commit/pre-commit)
+[![CI](https://github.com/h-holm/python-project/workflows/Integration%20Test/badge.svg)](https://github.com/h-holm/python-project/actions)
+[![CodeQL](https://github.com/h-holm/python-project/workflows/CodeQL%20Analysis/badge.svg)](https://github.com/h-holm/python-project/actions/workflows/codeql-analysis.yaml)
+[![pre-commit.ci status](https://results.pre-commit.ci/badge/github/h-holm/python-project/main.svg)](https://results.pre-commit.ci/latest/github/h-holm/python-project/main)
 
 A GitHub template repo for a containerized Python application.
 
