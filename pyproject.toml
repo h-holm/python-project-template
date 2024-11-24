@@ -165,13 +165,10 @@ extra-dependencies = [
 ]
 
 [tool.hatch.envs.test.scripts]
-cov = "pytest --cov-report=term-missing --cov-config=pyproject.toml --cov=src/python_project --cov=tests {args}"
 debug = "pytest --pdb"
-no-cov = "cov --no-cov {args}"
-test = "pytest -v"
-# The `test-cov-xml` command can be used in CI to generate a coverage report in XML format, which is required by
-# certain third parties, such as SonarQube code analysis services.
-test-cov-xml = "pytest --cov-report=xml"
+test = "pytest --verbose --cov-report=term-missing --cov=src/python_project {args}"
+no-cov = "test --no-cov {args}"
+cov-xml = "test --cov-report=xml"
 
 # By leveraging the Hatch matrix feature we can test against multiple Python versions.
 [[tool.hatch.envs.test.matrix]]
