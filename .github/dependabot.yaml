@@ -3,32 +3,33 @@ version: 2
 updates:
   # Maintain Docker dependencies.
   - package-ecosystem: docker
-    directory: "/"
+    directory: '/'
     schedule:
       interval: weekly
     open-pull-requests-limit: 5
 
   # Maintain GitHub Actions dependencies.
   - package-ecosystem: github-actions
-    directory: "/"
+    directory: '/'
     schedule:
       interval: weekly
     open-pull-requests-limit: 5
     groups:
       github-actions:
         patterns:
-          - "*"
+          - '*'
 
   # Maintain Python dependencies.
   - package-ecosystem: pip
-    directory: "/"
+    directory: '/'
     schedule:
       interval: weekly
     open-pull-requests-limit: 5
     groups:
-      minor-dependencies:
+      minor-and-patch:
         update-types:
-          - "minor"
+          - 'patch'
+          - 'minor'
     versioning-strategy: increase
     allow:
-      - dependency-type: "all"
+      - dependency-type: 'all'
