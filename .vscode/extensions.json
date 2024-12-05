@@ -4,6 +4,7 @@
         "christian-kohler.path-intellisense",
         "davidanson.vscode-markdownlint",
         "editorconfig.editorconfig",
+        "github.vscode-github-actions",
         "matangover.mypy",
         "ms-azuretools.vscode-docker",
         "ms-python.python",
