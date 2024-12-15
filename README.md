@@ -22,10 +22,10 @@ A template repo for a containerized Python application.
 * Linting and formatting using [ruff](https://github.com/astral-sh/ruff)
 * Static type checking using [mypy](https://github.com/python/mypy)
 * [pytest](https://docs.pytest.org) for unit tests with [coverage](https://coverage.readthedocs.io/en/7.6.7)-based reporting
-* Automatic set up of [pre-commit](https://github.com/pre-commit/pre-commit) hooks via the `lint` Hatch environment
 * [./src layout](https://packaging.python.org/en/latest/discussions/src-layout-vs-flat-layout) to separate application logic from tests and project metadata
 * Sane logging configured in a single [logging.conf](./src/python_project/logging.conf) file
 * Optional quality-of-life add-ons:
+  * [pre-commit](https://github.com/pre-commit/pre-commit) hooks installable via the `hooks` script of the `lint` Hatch environment
   * (further) enforcing of uniform formatting via an [.editorconfig](./.editorconfig)
   * recommended [VS Code](https://code.visualstudio.com) settings and extensions through a [.vscode](./.vscode) subdirectory
   * a [Dev Container](https://code.visualstudio.com/docs/devcontainers/containers)-based development environment
