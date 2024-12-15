@@ -60,7 +60,7 @@ upgrade-pkg = "PIP_COMPILE_UPGRADE_PACKAGE='{args}' hatch env run --env {env_nam
 
 # Default environment used by Hatch if no other env is explicitly specified.
 [tool.hatch.envs.default]
-dependencies = ["typer~=0.14.0"]
+dependencies = ["typer~=0.15.1"]
 installer = "uv"
 pip-compile-constraint = "default" # Keep locks between default and other environments consistent.
 pip-compile-hashes = true
@@ -77,7 +77,7 @@ type = "pip-compile"
 # Use `extra-dependencies` to inherit and extend upon the dependencies of the default env.
 extra-dependencies = [
   "pytest~=8.3.4",
-  "pytest-asyncio~=0.24.0",
+  "pytest-asyncio~=0.25.0",
   "pytest-cov~=6.0.0",
   "pytest-mock~=3.14.0",
 ]
@@ -103,17 +103,14 @@ extra-dependencies = [
   # To enable `mypy` to `pip install` stubs.
   "pip~=24.3.1",
   "pre-commit~=4.0.1",
-  "pydantic~=2.10.2",
+  "pydantic~=2.10.3",
   "pytest~=8.3.4",
-  "ruff~=0.8.1",
+  "ruff~=0.8.3",
 ]
 
 [tool.hatch.envs.lint.scripts]
 # Set up and run `pre-commit` hooks.
-hooks = [
-  "pre-commit install",
-  "pre-commit",
-]
+hooks = ["pre-commit install", "pre-commit"]
 # Check the code style and formatting.
 style = [
   "echo \"VERSION: `ruff --version`\"",
@@ -122,11 +119,7 @@ style = [
 ]
 # Fix code style and formatting issues where possible.
 # Run `style` at the end to generate feedback on non-fixable issues.
-fix = [
-  "ruff format {args:.}",
-  "ruff check --fix {args:.}",
-  "style"
-]
+fix = ["ruff format {args:.}", "ruff check --fix {args:.}", "style"]
 # Perform static type checking.
 typing = [
   "echo \"VERSION: `mypy --version`\"",
