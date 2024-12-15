@@ -122,7 +122,11 @@ style = [
 ]
 # Fix code style and formatting issues where possible.
 # Run `style` at the end to generate feedback on non-fixable issues.
-fix = ["ruff format {args:.}", "ruff check --fix {args:.}", "style"]
+fix = [
+  "ruff format {args:.}",
+  "ruff check --fix {args:.}",
+  "style"
+]
 # Perform static type checking.
 typing = [
   "echo \"VERSION: `mypy --version`\"",
