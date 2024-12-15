@@ -37,6 +37,105 @@ requires = ["hatch-pip-compile~=1.11.3"]
 path = "src/python_project/__version__.py"
 raw-options = { version_scheme = "no-guess-dev" }
 
+######################
+# Hatch Environments #
+######################
+
+# "Base" env to ensure the same Python version is used across all Hatch envs. Note that this env is not supposed to be
+# used directly, but rather as a template for other envs.
+[tool.hatch.envs.base]
+python = "3.13"
+# Skip (local) installation of the project itself. This assumes the project is not supposed to be packaged as a Python
+# egg or similar.
+skip-install = true
+template = "base"
+
+[tool.hatch.envs.base.scripts]
+upgrade-all = "PIP_COMPILE_UPGRADE=1 hatch env run --env {env_name} -- python --version"
+upgrade-pkg = "PIP_COMPILE_UPGRADE_PACKAGE='{args}' hatch env run --env {env_name} -- python --version"
+
+#######################
+# Default Environment #
+#######################
+
+# Default environment used by Hatch if no other env is explicitly specified.
+[tool.hatch.envs.default]
+dependencies = ["typer~=0.15.1"]
+installer = "uv"
+pip-compile-constraint = "default" # Keep locks between default and other environments consistent.
+pip-compile-hashes = true
+pip-compile-resolver = "uv"
+pip-compile-installer = "uv"
+template = "base"
+type = "pip-compile"
+
+####################
+# Test Environment #
+####################
+
+[tool.hatch.envs.test]
+# Use `extra-dependencies` to inherit and extend upon the dependencies of the default env.
+extra-dependencies = [
+  "pytest~=8.3.4",
+  "pytest-asyncio~=0.25.0",
+  "pytest-cov~=6.0.0",
+  "pytest-mock~=3.14.0",
+]
+
+[tool.hatch.envs.test.scripts]
+debug = "pytest --pdb"
+test = "pytest --verbose --cov-report=term-missing --cov=src/python_project {args}"
+no-cov = "test --no-cov {args}"
+cov-xml = "test --cov-report=xml"
+
+# By leveraging the Hatch matrix feature we can test against multiple Python versions.
+[[tool.hatch.envs.test.matrix]]
+template = ["test"]
+python = ["3.13"]
+
+####################
+# Lint Environment #
+####################
+
+[tool.hatch.envs.lint]
+extra-dependencies = [
+  "mypy~=1.13.0",
+  # To enable `mypy` to `pip install` stubs.
+  "pip~=24.3.1",
+  "pre-commit~=4.0.1",
+  "pydantic~=2.10.3",
+  "pytest~=8.3.4",
+  "ruff~=0.8.3",
+]
+
+[tool.hatch.envs.lint.scripts]
+# Set up and run `pre-commit` hooks.
+hooks = ["pre-commit install", "pre-commit"]
+# Check the code style and formatting.
+style = [
+  "echo \"VERSION: `ruff --version`\"",
+  "ruff check {args:.}",
+  "ruff format --check {args:.}",
+]
+# Fix code style and formatting issues where possible.
+# Run `style` at the end to generate feedback on non-fixable issues.
+fix = ["ruff format {args:.}", "ruff check --fix {args:.}", "style"]
+# Perform static type checking.
+typing = [
+  "echo \"VERSION: `mypy --version`\"",
+  "mypy --install-types --non-interactive {args}",
+]
+# For use as a `pre-commit` hook, define a simpler `typing` script that (1) ignores missing imports
+# and (2) does not `--install-types`.
+simple-typing = [
+  "echo \"VERSION: `mypy --version`\"",
+  "mypy --ignore-missing-imports {args}",
+]
+# Define a `lint` script that runs full-scale style, formatting and type checks ...
+lint = ["style", "typing"]
+# ... and a simpler `simple-lint` script for use as a pre-commit hook.
+simple-lint = ["style", "simple-typing"]
+
 ##################
 # External Tools #
 ##################
@@ -73,7 +172,7 @@ warn_unused_ignores = true
 addopts = "--cov=src/python_project --cov-report=term-missing --doctest-glob='*.md'"
 asyncio_default_fixture_loop_scope = "function"
 asyncio_mode = "strict"
-minversion = "8.3.3"
+minversion = "8.3.4"
 pythonpath = ["src"]
 testpaths = ["tests"]
 
@@ -118,101 +217,3 @@ lines-after-imports = 2
 
 [tool.ruff.lint.pydocstyle]
 convention = "google"
-
-######################
-# Hatch Environments #
-######################
-
-# "Base" env to ensure the same Python version is used across all Hatch envs. Note that this env is not supposed to be
-# used directly, but rather as a template for other envs.
-[tool.hatch.envs.base]
-python = "3.13"
-# Skip (local) installation of the project itself. This assumes the project is not supposed to be packaged as a Python
-# egg or similar.
-skip-install = true
-template = "base"
-
-[tool.hatch.envs.base.scripts]
-upgrade-all = "PIP_COMPILE_UPGRADE=1 hatch env run --env {env_name} -- python --version"
-upgrade-pkg = "PIP_COMPILE_UPGRADE_PACKAGE='{args}' hatch env run --env {env_name} -- python --version"
-
-#######################
-# Default Environment #
-#######################
-
-# Default environment used by Hatch if no other env is explicitly specified.
-[tool.hatch.envs.default]
-dependencies = ["typer~=0.14.0"]
-installer = "uv"
-pip-compile-constraint = "default" # Keep locks between default and other environments consistent.
-pip-compile-hashes = true
-pip-compile-resolver = "uv"
-pip-compile-installer = "uv"
-template = "base"
-type = "pip-compile"
-
-####################
-# Test Environment #
-####################
-
-[tool.hatch.envs.test]
-# Use `extra-dependencies` to inherit and extend upon the dependencies of the default env.
-extra-dependencies = [
-  "pytest~=8.3.4",
-  "pytest-asyncio~=0.24.0",
-  "pytest-cov~=6.0.0",
-  "pytest-mock~=3.14.0",
-]
-
-[tool.hatch.envs.test.scripts]
-debug = "pytest --pdb"
-test = "pytest --verbose --cov-report=term-missing --cov=src/python_project {args}"
-no-cov = "test --no-cov {args}"
-cov-xml = "test --cov-report=xml"
-
-# By leveraging the Hatch matrix feature we can test against multiple Python versions.
-[[tool.hatch.envs.test.matrix]]
-template = ["test"]
-python = ["3.13"]
-
-####################
-# Lint Environment #
-####################
-
-[tool.hatch.envs.lint]
-extra-dependencies = [
-  "mypy~=1.13.0",
-  # To enable `mypy` to `pip install` stubs.
-  "pip~=24.3.1",
-  "pre-commit~=4.0.1",
-  "pydantic~=2.10.2",
-  "pytest~=8.3.4",
-  "ruff~=0.8.1",
-]
-post-install-commands = ["hatch run lint:pre-commit install"]
-
-[tool.hatch.envs.lint.scripts]
-# Check the code style and formatting.
-style = [
-  "echo \"VERSION: `ruff --version`\"",
-  "ruff check {args:.}",
-  "ruff format --check {args:.}",
-]
-# Fix code style and formatting issues where possible.
-# Run `style` at the end to generate feedback on non-fixable issues.
-fix = ["ruff format {args:.}", "ruff check --fix {args:.}", "style"]
-# Perform static type checking.
-typing = [
-  "echo \"VERSION: `mypy --version`\"",
-  "mypy --install-types --non-interactive {args}",
-]
-# For use as a `pre-commit` hook, define a simpler `typing` script that (1) ignores missing imports
-# and (2) does not `--install-types`.
-simple-typing = [
-  "echo \"VERSION: `mypy --version`\"",
-  "mypy --ignore-missing-imports {args}",
-]
-# Define a `lint` script that runs full-scale style, formatting and type checks ...
-lint = ["style", "typing"]
-# ... and a simpler `simple-lint` script for use as a pre-commit hook.
-simple-lint = ["style", "simple-typing"]
