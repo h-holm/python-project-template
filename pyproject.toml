@@ -77,7 +77,7 @@ type = "pip-compile"
 # Use `extra-dependencies` to inherit and extend upon the dependencies of the default env.
 extra-dependencies = [
   "pytest~=8.3.4",
-  "pytest-asyncio~=0.25.1",
+  "pytest-asyncio~=0.25.2",
   "pytest-cov~=6.0.0",
   "pytest-mock~=3.14.0",
 ]
@@ -102,9 +102,9 @@ extra-dependencies = [
   "mypy~=1.14.1",
   "pip~=24.3.1",  # To enable `mypy` to `pip install` stubs.
   "pre-commit~=4.0.1",
-  "pydantic~=2.10.4",
+  "pydantic~=2.10.5",
   "pytest~=8.3.4",
-  "ruff~=0.8.5",
+  "ruff~=0.9.1",
 ]
 
 [tool.hatch.envs.lint.scripts]
