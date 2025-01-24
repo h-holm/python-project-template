@@ -19,7 +19,7 @@ if not __package__:  # pragma: no cover
     sys.path.insert(0, str(Path(__file__).parents[1]))
 
 
-from python_project.utils.utils import get_time_elapsed_string
+from python_project.utils.utils import get_ordinal_suffix, get_time_elapsed_string
 
 
 # Set up logging.
@@ -67,7 +67,7 @@ def main(
     start_timestamp = datetime.now(tz=UTC)
     LOGGER.info(f"Script started at: {start_timestamp.strftime(TIMESTAMP_FORMAT)} ({UTC}).")
 
-    LOGGER.info(fibonacci(nth_number))
+    LOGGER.info(f"The {nth_number}{get_ordinal_suffix(nth_number)} Fibonacci number is: {fibonacci(nth_number)}.")
 
     end_timestamp = datetime.now(tz=UTC)
     time_elapsed_string = get_time_elapsed_string(end_timestamp - start_timestamp)

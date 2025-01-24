@@ -43,3 +43,16 @@ def get_time_elapsed_string(elapsed_time: float | timedelta) -> str:
         output_string = output_string.replace("seconds", "second")
 
     return output_string
+
+
+def get_ordinal_suffix(integer: int) -> str:
+    """Given an integer, return the correct ordinal suffix, e.g., 'st' if the integer is 1 (first)."""
+    match str(integer)[-1]:
+        case "1":
+            return "st"
+        case "2":
+            return "nd"
+        case "3":
+            return "rd"
+        case _:
+            return "th"
