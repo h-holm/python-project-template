@@ -1,6 +1,7 @@
-"""Main entrypoint of a Python application that outputs whether the specified file is non-empty."""
+"""Main entrypoint of a Python application that outputs the n:th number in the Fibonacci sequence."""
 
 import enum
+import functools
 import logging.config
 import sys
 from datetime import UTC, datetime
@@ -18,7 +19,7 @@ if not __package__:  # pragma: no cover
     sys.path.insert(0, str(Path(__file__).parents[1]))
 
 
-from python_project.utils.utils import get_time_elapsed_string, is_non_empty_file
+from python_project.utils.utils import get_time_elapsed_string
 
 
 # Set up logging.
@@ -40,18 +41,33 @@ class LogLevel(str, enum.Enum):
     DEBUG = "debug"
 
 
+@functools.lru_cache(None)
+def fibonacci(n: int) -> int:
+    """Compute the nth Fibonacci number.
+
+    Args:
+        n (int): The position in the Fibonacci sequence.
+
+    Returns:
+        int: The nth Fibonacci number.
+    """
+    if n < 2:  # noqa: PLR2004
+        return n
+    return fibonacci(n - 1) + fibonacci(n - 2)
+
+
 @app.command()
 def main(
-    file_path: Annotated[Path, typer.Argument(help="The file path to check", envvar="FILE_PATH")],
+    nth_number: Annotated[int, typer.Argument(help="The nth Fibonacci number to compute.", min=0, envvar="NTH_NUMBER")],
     log_level: Annotated[LogLevel, typer.Option(help="Log level")] = LogLevel.INFO,
 ) -> None:
-    """Log whether the input `file_path` is a non-empty file."""
+    """Log the `nth_number` of the Fibonacci sequence."""
     LOGGER.setLevel(log_level.upper())
 
     start_timestamp = datetime.now(tz=UTC)
     LOGGER.info(f"Script started at: {start_timestamp.strftime(TIMESTAMP_FORMAT)} ({UTC}).")
 
-    LOGGER.info(f"{is_non_empty_file(file_path)=}")
+    LOGGER.info(fibonacci(nth_number))
 
     end_timestamp = datetime.now(tz=UTC)
     time_elapsed_string = get_time_elapsed_string(end_timestamp - start_timestamp)
