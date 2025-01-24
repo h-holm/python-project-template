@@ -3,7 +3,7 @@ from pathlib import Path
 
 import pytest
 
-from python_project.utils.utils import get_time_elapsed_string, is_non_empty_file
+from python_project.utils.utils import get_ordinal_suffix, get_time_elapsed_string, is_non_empty_file
 
 
 @pytest.mark.parametrize(
@@ -29,3 +29,19 @@ def test_is_non_empty_file(file_path: str | Path, expected_output: bool) -> None
 )
 def test_get_time_elapsed_string(timestamp: float | timedelta, expected_output: str) -> None:
     assert get_time_elapsed_string(timestamp) == expected_output
+
+
+@pytest.mark.parametrize(
+    ("integer", "expected_output"),
+    [
+        (0, "th"),
+        (1, "st"),
+        (2, "nd"),
+        (3, "rd"),
+        (4, "th"),
+        (-205, "th"),
+        (1306, "th"),
+    ],
+)
+def test_get_ordinal_suffix(integer: int, expected_output: str) -> None:
+    assert get_ordinal_suffix(integer) == expected_output
