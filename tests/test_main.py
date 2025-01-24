@@ -1,9 +1,27 @@
+import pytest
 from typer.testing import CliRunner
 
-from python_project.main import app
+from python_project.main import app, fibonacci
 
 
 runner = CliRunner()
+
+
+@pytest.mark.parametrize(
+    ("n", "nth_number"),
+    [
+        (0, 0),
+        (1, 1),
+        (2, 1),
+        (3, 2),
+        (4, 3),
+        (5, 5),
+        (19, 4181),
+        (200, 280571172992510140037611932413038677189525),
+    ],
+)
+def test_fibonacci(n: int, nth_number: int) -> None:
+    assert fibonacci(n) == nth_number
 
 
 def test_main() -> None:
