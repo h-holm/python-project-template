@@ -11,7 +11,8 @@
 [![CodeQL](https://github.com/h-holm/python-project/workflows/CodeQL%20Analysis/badge.svg)](https://github.com/h-holm/python-project/actions/workflows/codeql-analysis.yaml)
 [![pre-commit.ci status](https://results.pre-commit.ci/badge/github/h-holm/python-project/main.svg)](https://results.pre-commit.ci/latest/github/h-holm/python-project/main)
 
-A template repo for a containerized Python application.
+A template repo that enables quickly setting up an end-to-end CI/CD pipeline that tests and deploys a containerized
+Python application. The placeholder Python logic computes a Fibonacci number.
 
 ## Features ✅
 
