@@ -3,6 +3,8 @@ version: 2
 updates:
   # Maintain Docker dependencies.
   - package-ecosystem: docker
+    assignees:
+      - 'h-holm'
     directory: '/'
     schedule:
       interval: weekly
@@ -10,6 +12,8 @@ updates:
 
   # Maintain GitHub Actions dependencies.
   - package-ecosystem: github-actions
+    assignees:
+      - 'h-holm'
     directory: '/'
     schedule:
       interval: weekly
@@ -21,6 +25,8 @@ updates:
 
   # Maintain Python dependencies.
   - package-ecosystem: pip
+    assignees:
+      - 'h-holm'
     directory: '/'
     schedule:
       interval: weekly
@@ -30,6 +36,9 @@ updates:
         update-types:
           - 'patch'
           - 'minor'
+      major:
+        update-types:
+          - 'major'
     versioning-strategy: increase
     allow:
       - dependency-type: 'all'
