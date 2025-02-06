@@ -109,7 +109,10 @@ extra-dependencies = [
 
 [tool.hatch.envs.lint.scripts]
 # Set up and run `pre-commit` hooks.
-hooks = ["pre-commit install", "pre-commit"]
+hooks = [
+  "pre-commit install",
+  "pre-commit",
+]
 # Check the code style and formatting.
 style = [
   "echo \"VERSION: `ruff --version`\"",
@@ -118,7 +121,11 @@ style = [
 ]
 # Fix code style and formatting issues where possible.
 # Run `style` at the end to generate feedback on non-fixable issues.
-fix = ["ruff format {args:.}", "ruff check --fix {args:.}", "style"]
+fix = [
+  "ruff format {args:.}",
+  "ruff check --fix {args:.}",
+  "style",
+]
 # Perform static type checking.
 typing = [
   "echo \"VERSION: `mypy --version`\"",
@@ -131,9 +138,15 @@ simple-typing = [
   "mypy --ignore-missing-imports {args}",
 ]
 # Define a `lint` script that runs full-scale style, formatting and type checks ...
-lint = ["style", "typing"]
+lint = [
+  "style",
+  "typing",
+]
 # ... and a simpler `simple-lint` script for use as a pre-commit hook.
-simple-lint = ["style", "simple-typing"]
+simple-lint = [
+  "style",
+  "simple-typing",
+]
 
 ##################
 # External Tools #

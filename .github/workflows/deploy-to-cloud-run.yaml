@@ -1,0 +1,114 @@
+name: Deploy to Cloud Run
+
+on:
+  push:
+    tags: ['**']
+    branches: ['main']
+    paths:
+      # Trigger on any change in `./src` except for changes in Markdown files.
+      - 'src/**'
+      - '!src/**.md'
+      # Trigger on any change to the unit tests.
+      - tests/**/*.py
+      # Trigger on any change to dependencies.
+      - pyproject.toml
+      - 'requirements**.txt'
+      # Trigger on any change to the container image.
+      - Dockerfile
+      - .dockerignore
+      # Trigger on any change to the GitHub actions workflows.
+      - .github/workflows/**.yml
+
+concurrency:
+  group: 'deploy-${{ github.workflow }}-${{ github.ref || github.run_id }}'
+  cancel-in-progress: true
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  integration-test:
+    name: Integration Test
+    uses: ./.github/workflows/integration-test.yaml
+    secrets: inherit
+    permissions:
+      actions: read
+      contents: read
+      security-events: write
+    with:
+      GITHUB_ENVIRONMENT: |-
+        ${{ startsWith(github.ref, 'refs/tags') && 'prd'
+         || startsWith(github.ref, 'refs/heads/main') && 'prd'
+         || 'stg' }}
+
+  deploy-cloud-run-job:
+    name: Deploy Cloud Run Job
+    runs-on: ubuntu-latest
+    needs: [integration-test]
+
+    # If a commit OR tag was pushed into `main`, set the GitHub environment to "prd", else "stg".
+    environment: |-
+      ${{ startsWith(github.ref, 'refs/tags') && 'prd'
+       || startsWith(github.ref, 'refs/heads/main') && 'prd'
+       || 'stg' }}
+
+    env:
+      ARTIFACT_REGISTRY_HOSTNAME: "${{ secrets.GCP_LOCATION }}-docker.pkg.dev"
+      ARTIFACT_REGISTRY_URL: "${{ secrets.GCP_PROJECT_ID }}/${{ secrets.GCP_ARTIFACT_REGISTRY_NAME }}"
+      CICD_SERVICE_ACCOUNT_EMAIL: "${{ vars.GCP_CICD_SERVICE_ACCOUNT_NAME }}@${{ secrets.GCP_PROJECT_ID }}.iam.gserviceaccount.com"
+      RUNTIME_SERVICE_ACCOUNT_EMAIL: "${{ vars.GCP_RUNTIME_SERVICE_ACCOUNT_NAME }}@${{ secrets.GCP_PROJECT_ID }}.iam.gserviceaccount.com"
+      # Use a shorter variable name as this is referenced multiple times.
+      REPO_NAME: ${{ github.event.repository.name }}
+
+    # The `gcp-auth` step requires these permissions to read and pass tokens.
+    permissions:
+      contents: read
+      id-token: write
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      # Authenticate to Google Cloud via Workload Identity Federation (WIF).
+      - name: Authenticate to Google Cloud
+        id: gcp-auth
+        uses: google-github-actions/auth@v2
+        with:
+          service_account: ${{ env.CICD_SERVICE_ACCOUNT_EMAIL }}
+          workload_identity_provider: ${{ secrets.GCP_WORKLOAD_IDENTITY_PROVIDER }}
+          token_format: access_token
+
+      # Create (or update if one already exists) a Cloud Run job. Attach a service account (SA) to the Cloud Run job
+      # that has the necessary privileges for running the application logic. Note that this "runtime SA" is different
+      # from the "CI/CD SA" used to run this GitHub Actions workflow. Make sure to `--execute-now` and `--wait` for the
+      # job to finish, so that the CI job fails in case the job fails.
+      - name: Deploy Cloud Run Job
+        run: |-
+          gcloud run jobs deploy "${{ env.REPO_NAME }}" \
+            --image "${{ env.ARTIFACT_REGISTRY_HOSTNAME }}/${{ env.ARTIFACT_REGISTRY_URL }}/${{ env.REPO_NAME }}:sha-${{ github.sha }}" \
+            --max-retries 3 \
+            --task-timeout "10m" \
+            --parallelism 1 \
+            --region "${{ secrets.GCP_LOCATION }}" \
+            --service-account "${{ env.RUNTIME_SERVICE_ACCOUNT_EMAIL }}" \
+            --args="--log-level","debug","requirements.txt" \
+            --execute-now \
+            --wait
+
+  # If the tests and deployment jobs are successful, promote the already-pushed and now-vetted image.
+  promote-image:
+    name: Promote Image
+    uses: ./.github/workflows/promote-image.yaml
+    needs: [integration-test, deploy-cloud-run-job]
+    secrets: inherit
+    permissions:
+      contents: read
+      id-token: write
+    with:
+      GITHUB_ENVIRONMENT: |-
+        ${{ startsWith(github.ref, 'refs/tags') && 'prd'
+         || startsWith(github.ref, 'refs/heads/main') && 'prd'
+         || 'stg' }}
