@@ -60,7 +60,11 @@ jobs:
     # Secrets set in a GitHub Environment do not trickle down to re-used workflows as desired. This is a workaround to
     # make the required secrets available to the `build-and-push-image` job when calling it from here.
     with:
-      GITHUB_ENVIRONMENT: ${{ startsWith(github.ref, 'refs/tags') && 'prod' || 'dev' }}
+      GITHUB_ENVIRONMENT: |-
+        ${{ startsWith(github.ref, 'refs/tags') && 'prd'
+         || startsWith(github.ref, 'refs/heads/main') && 'prd'
+         || 'stg' }}
+
 
   integration-test:
     name: Integration Test
@@ -68,13 +72,13 @@ jobs:
     runs-on: ubuntu-latest
 
     # If this workflow is called from another workflow, use the `GITHUB_ENVIRONMENT` input variable. Otherwise, set the
-    # GitHub Environment to "dev". This catches PRs that do not have `main` as the target branch.
-    environment: ${{ inputs.GITHUB_ENVIRONMENT != '' && inputs.GITHUB_ENVIRONMENT || 'dev' }}
+    # GitHub Environment to "stg". This catches PRs that do not have `main` as the target branch.
+    environment: ${{ inputs.GITHUB_ENVIRONMENT != '' && inputs.GITHUB_ENVIRONMENT || 'stg' }}
     env:
       ARTIFACT_REGISTRY_HOSTNAME: "${{ secrets.GCP_LOCATION }}-docker.pkg.dev"
       ARTIFACT_REGISTRY_URL: "${{ secrets.GCP_PROJECT_ID }}/${{ secrets.GCP_ARTIFACT_REGISTRY_NAME }}"
       CICD_SERVICE_ACCOUNT_EMAIL: "${{ vars.GCP_CICD_SERVICE_ACCOUNT_NAME }}@${{ secrets.GCP_PROJECT_ID }}.iam.gserviceaccount.com"
-      RUNTIME_SERVICE_ACCOUNT_EMAIL: "${{ secrets.GCP_RUNTIME_SERVICE_ACCOUNT_NAME }}@${{ secrets.GCP_PROJECT_ID }}.iam.gserviceaccount.com"
+      RUNTIME_SERVICE_ACCOUNT_EMAIL: "${{ vars.GCP_RUNTIME_SERVICE_ACCOUNT_NAME }}@${{ secrets.GCP_PROJECT_ID }}.iam.gserviceaccount.com"
 
     # The `gcp-auth` step requires these permissions to read and pass tokens.
     permissions:
