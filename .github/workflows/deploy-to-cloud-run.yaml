@@ -17,7 +17,7 @@ on:
       - Dockerfile
       - .dockerignore
       # Trigger on any change to the GitHub actions workflows.
-      - .github/workflows/**.yml
+      - .github/workflows/**.yaml
 
 concurrency:
   group: 'deploy-${{ github.workflow }}-${{ github.ref || github.run_id }}'
