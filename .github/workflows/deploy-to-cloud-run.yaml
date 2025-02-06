@@ -95,7 +95,7 @@ jobs:
             --parallelism 1 \
             --region "${{ secrets.GCP_LOCATION }}" \
             --service-account "${{ env.RUNTIME_SERVICE_ACCOUNT_EMAIL }}" \
-            --args="--log-level","debug","requirements.txt" \
+            --args="--log-level,debug,200" \
             --execute-now \
             --wait
 
