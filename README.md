@@ -7,7 +7,7 @@
 [![Mypy](https://img.shields.io/badge/type%20checked-mypy-039dfc)](https://github.com/python/mypy)
 [![Pytest](https://img.shields.io/static/v1?label=‎&message=Pytest&logo=Pytest&color=b647c4&logoColor=white)](https://docs.pytest.org)
 [![pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit&logoColor=white)](https://github.com/pre-commit/pre-commit)
-[![Integration Test](https://github.com/h-holm/python-project/workflows/Integration%20Test/badge.svg?branch=main)](https://github.com/h-holm/python-project/actions/workflows/integration-test.yaml?branch=main)
+[![Deploy to Cloud Run](https://github.com/h-holm/python-project/workflows/Deploy%20to%20Cloud%20Run/badge.svg)](https://github.com/h-holm/python-project/actions/workflows/deploy-to-cloud-run.yaml)
 [![CodeQL](https://github.com/h-holm/python-project/workflows/CodeQL%20Analysis/badge.svg)](https://github.com/h-holm/python-project/actions/workflows/codeql-analysis.yaml)
 [![pre-commit.ci status](https://results.pre-commit.ci/badge/github/h-holm/python-project/main.svg)](https://results.pre-commit.ci/latest/github/h-holm/python-project/main)
 
