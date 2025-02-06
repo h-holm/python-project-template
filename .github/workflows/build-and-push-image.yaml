@@ -36,7 +36,7 @@ jobs:
     env:
       ARTIFACT_REGISTRY_HOSTNAME: "${{ secrets.GCP_LOCATION }}-docker.pkg.dev"
       ARTIFACT_REGISTRY_URL: "${{ secrets.GCP_PROJECT_ID }}/${{ secrets.GCP_ARTIFACT_REGISTRY_NAME }}"
-      CI_SERVICE_ACCOUNT_EMAIL: "${{ secrets.GCP_CI_SERVICE_ACCOUNT_NAME }}@${{ secrets.GCP_PROJECT_ID }}.iam.gserviceaccount.com"
+      CICD_SERVICE_ACCOUNT_EMAIL: "${{ vars.GCP_CICD_SERVICE_ACCOUNT_NAME }}@${{ secrets.GCP_PROJECT_ID }}.iam.gserviceaccount.com"
 
     # The `gcp-auth` step requires these permissions to read and pass tokens.
     permissions:
@@ -54,7 +54,7 @@ jobs:
         id: gcp-auth
         uses: google-github-actions/auth@v2
         with:
-          service_account: ${{ env.CI_SERVICE_ACCOUNT_EMAIL }}
+          service_account: ${{ env.CICD_SERVICE_ACCOUNT_EMAIL }}
           workload_identity_provider: ${{ secrets.GCP_WORKLOAD_IDENTITY_PROVIDER }}
           token_format: access_token
 
