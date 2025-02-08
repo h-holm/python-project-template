@@ -17,7 +17,7 @@ repos:
       - id: check-yaml
       - id: end-of-file-fixer
       - id: mixed-line-ending
-        args: ["--fix=auto"] # Replace "auto" with "lf" to enforce Linux/Mac line endings or "crlf" for Windows
+        args: ['--fix=auto'] # Replace "auto" with "lf" to enforce Linux/Mac line endings or "crlf" for Windows
 
   # The built-in `check-json` hook does not support JSON5 files (~= JSON with comments and trailing commas). To lint
   # JSON5 files, use the `check-json5` hook instead.

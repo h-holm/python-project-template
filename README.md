@@ -29,7 +29,6 @@ reporting
 * [./src layout](https://packaging.python.org/en/latest/discussions/src-layout-vs-flat-layout) to separate application
 logic from tests and project metadata
 * Sane logging configured in a single [logging.conf](./src/python_project/logging.conf) file
-* Placeholder Python logic that is easily replaceable with whatever one's use case requires
 * Optional quality-of-life add-ons:
   * [pre-commit](https://github.com/pre-commit/pre-commit) hooks installable via the `hooks` script of the `lint` Hatch
   environment
@@ -38,14 +37,22 @@ logic from tests and project metadata
   subdirectory
   * a [Dev Container](https://code.visualstudio.com/docs/devcontainers/containers)-based development environment
 
-The repository contains an example [GitHub Actions](./.github/workflows/) CI pipeline that:
+### [GitHub Actions](./.github/workflows/) [CI/CD](https://www.redhat.com/en/topics/devops/what-is-ci-cd)
 
-* runs [ruff](https://github.com/astral-sh/ruff)-based linting and formatting, [mypy](https://github.com/python/mypy)-
+On any pull request, do the following while targeting a `stg` staging environment:
+
+* run [ruff](https://github.com/astral-sh/ruff)-based linting and formatting, [mypy](https://github.com/python/mypy)-
 based static type checking, and [pytest](https://docs.pytest.org)-based unit testing;
-* performs a [CodeQL](https://codeql.github.com) vulnerability scan;
-* builds and pushes a well-labeled container image to a
+* perform a [CodeQL](https://codeql.github.com) vulnerability scan;
+* build and push a well-labeled container image to a
 [Google Cloud Artifact Registry](https://cloud.google.com/artifact-registry/docs);
-* executes a simple integration test on [Google Cloud Run](https://cloud.google.com/run?hl=en).
+* execute a simple integration test on [Google Cloud Run](https://cloud.google.com/run?hl=en).
+
+On merge (or push) into the `main` branch, _additionally_ do the following while targeting a `prd` production
+environment:
+
+* deploy a Cloud Run job,
+* promote the container image by adding tags such as `latest`, `main` and the [SemVer](https://semver.org) tag (if any).
 
 ## Requirements
 
@@ -65,8 +72,9 @@ hatch run default:python src/python_project/main.py --help  # Equivalent to not 
 
 ### Unit Tests
 
-Run the `test` script of the "test" Hatch environment to execute the [`pytest`](https://docs.pytest.org/en/stable)-
-backed unit tests and generate a [coverage](https://coverage.readthedocs.io/en/7.6.7) report:
+Run the `test` script of the "test" Hatch environment to execute the
+[`pytest`](https://docs.pytest.org/en/stable)-backed unit tests and generate a
+[coverage](https://coverage.readthedocs.io/en/7.6.7) report:
 
 ```shell
 hatch run test:test
@@ -80,6 +88,13 @@ Run the `lint` script of the "lint" Hatch environment to perform (1) formatting 
 
 ```shell
 hatch run lint:lint
+```
+
+Set up [pre-commit](https://github.com/pre-commit/pre-commit) hooks that always align with the "lint" Hatch
+environment:
+
+```shell
+hatch run lint:hooks
 ```
 
 ### Bumping the Version
