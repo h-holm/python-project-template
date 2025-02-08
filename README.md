@@ -90,6 +90,13 @@ Run the `lint` script of the "lint" Hatch environment to perform (1) formatting 
 hatch run lint:lint
 ```
 
+Set up [pre-commit](https://github.com/pre-commit/pre-commit) hooks that always align with the "lint" Hatch
+environment:
+
+```shell
+hatch run lint:hooks
+```
+
 ### Bumping the Version
 
 Run `hatch version` followed by the [SemVer](https://semver.org) component to bump, e.g.:
