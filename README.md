@@ -39,17 +39,17 @@ logic from tests and project metadata
 
 ### [GitHub Actions](./.github/workflows/) [CI/CD](https://www.redhat.com/en/topics/devops/what-is-ci-cd)
 
-On any pull request, do the following while targeting a `stg` staging environment:
+On any pull request, target a `stg` staging environment and do the following:
 
-* run [ruff](https://github.com/astral-sh/ruff)-based linting and formatting, [mypy](https://github.com/python/mypy)-
-based static type checking, and [pytest](https://docs.pytest.org)-based unit testing;
+* run [ruff](https://github.com/astral-sh/ruff)-based linting and formatting,
+[mypy](https://github.com/python/mypy)-based static type checking, and [pytest](https://docs.pytest.org)-based unit testing;
 * perform a [CodeQL](https://codeql.github.com) vulnerability scan;
 * build and push a well-labeled container image to a
 [Google Cloud Artifact Registry](https://cloud.google.com/artifact-registry/docs);
 * execute a simple integration test on [Google Cloud Run](https://cloud.google.com/run?hl=en).
 
-On merge (or push) into the `main` branch, _additionally_ do the following while targeting a `prd` production
-environment:
+On merge (or push) into the `main` branch, target a `prd` production environment and perform the same steps as above as
+well as:
 
 * deploy a Cloud Run job,
 * promote the container image by adding tags such as `latest`, `main` and the [SemVer](https://semver.org) tag (if any).
