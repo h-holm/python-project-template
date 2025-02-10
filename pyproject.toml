@@ -45,8 +45,7 @@ raw-options = { version_scheme = "no-guess-dev" }
 # used directly, but rather as a template for other envs.
 [tool.hatch.envs.base]
 python = "3.13"
-# Skip (local) installation of the project itself. This assumes the project is not supposed to be packaged as a Python
-# egg or similar.
+# Skip (local) installation of the project itself. This assumes the project is not supposed to be packaged.
 skip-install = true
 template = "base"
 
@@ -83,8 +82,8 @@ extra-dependencies = [
 ]
 
 [tool.hatch.envs.test.scripts]
-debug = "pytest --pdb"
-test = "pytest --verbose --cov-report=term-missing --cov=src/python_project {args}"
+debug = "python -m pytest --pdb"
+test = "python -m pytest --verbose --cov-report=term-missing --cov=src/python_project {args}"
 no-cov = "test --no-cov {args}"
 cov-xml = "test --cov-report=xml"
 
@@ -110,32 +109,32 @@ extra-dependencies = [
 [tool.hatch.envs.lint.scripts]
 # Set up and run `pre-commit` hooks.
 hooks = [
-  "pre-commit install",
-  "pre-commit",
+  "python -m pre_commit install",
+  "python -m pre_commit",
 ]
 # Check the code style and formatting.
 style = [
   "echo \"VERSION: `ruff --version`\"",
-  "ruff check {args:.}",
-  "ruff format --check {args:.}",
+  "python -m ruff check {args:.}",
+  "python -m ruff format --check {args:.}",
 ]
 # Fix code style and formatting issues where possible.
 # Run `style` at the end to generate feedback on non-fixable issues.
 fix = [
-  "ruff format {args:.}",
-  "ruff check --fix {args:.}",
+  "python -m ruff format {args:.}",
+  "python -m ruff check --fix {args:.}",
   "style",
 ]
 # Perform static type checking.
 typing = [
   "echo \"VERSION: `mypy --version`\"",
-  "mypy --install-types --non-interactive {args}",
+  "python -m mypy --install-types --non-interactive {args}",
 ]
 # For use as a `pre-commit` hook, define a simpler `typing` script that (1) ignores missing imports
 # and (2) does not `--install-types`.
 simple-typing = [
   "echo \"VERSION: `mypy --version`\"",
-  "mypy --ignore-missing-imports {args}",
+  "python -m mypy --ignore-missing-imports {args}",
 ]
 # Define a `lint` script that runs full-scale style, formatting and type checks ...
 lint = [
