@@ -99,11 +99,11 @@ python = ["3.13"]
 [tool.hatch.envs.lint]
 extra-dependencies = [
   "mypy~=1.15.0",
-  "pip~=25.0.0",  # To enable `mypy` to `pip install` stubs.
+  "pip~=25.0.1",  # To enable `mypy` to `pip install` stubs.
   "pre-commit~=4.1.0",
   "pydantic~=2.10.6",
   "pytest~=8.3.4",
-  "ruff~=0.9.5",
+  "ruff~=0.9.6",
 ]
 
 [tool.hatch.envs.lint.scripts]
