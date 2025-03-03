@@ -40,6 +40,6 @@ jobs:
       - name: Print Hatch Version
         run: hatch --version
 
-      - name: Run Unit Tests
+      - name: Run Linting and Type Checking
         run: |-
           hatch run lint:lint

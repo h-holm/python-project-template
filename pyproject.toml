@@ -75,7 +75,7 @@ type = "pip-compile"
 [tool.hatch.envs.test]
 # Use `extra-dependencies` to inherit and extend upon the dependencies of the default env.
 extra-dependencies = [
-  "pytest~=8.3.4",
+  "pytest~=8.3.5",
   "pytest-asyncio~=0.25.3",
   "pytest-cov~=6.0.0",
   "pytest-mock~=3.14.0",
@@ -102,7 +102,7 @@ extra-dependencies = [
   "pip~=25.0.1",  # To enable `mypy` to `pip install` stubs.
   "pre-commit~=4.1.0",
   "pydantic~=2.10.6",
-  "pytest~=8.3.4",
+  "pytest~=8.3.5",
   "ruff~=0.9.9",
 ]
 
@@ -183,7 +183,7 @@ warn_unused_ignores = true
 addopts = "--cov=src/python_project --cov-report=term-missing --doctest-glob='*.md'"
 asyncio_default_fixture_loop_scope = "function"
 asyncio_mode = "strict"
-minversion = "8.3.4"
+minversion = "8.3.5"
 pythonpath = ["src"]
 testpaths = ["tests"]
 
