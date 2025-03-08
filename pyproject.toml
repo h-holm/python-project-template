@@ -103,7 +103,7 @@ extra-dependencies = [
   "pre-commit~=4.1.0",
   "pydantic~=2.10.6",
   "pytest~=8.3.5",
-  "ruff~=0.9.9",
+  "ruff~=0.9.10",
 ]
 
 [tool.hatch.envs.lint.scripts]
