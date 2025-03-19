@@ -141,11 +141,6 @@ lint = [
   "style",
   "typing",
 ]
-# ... and a simpler `simple-lint` script for use as a pre-commit hook.
-simple-lint = [
-  "style",
-  "simple-typing",
-]
 
 ##################
 # External Tools #
