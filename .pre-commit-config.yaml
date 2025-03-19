@@ -1,5 +1,5 @@
 ci:
-  skip: [hatch-lint]
+  skip: [hatch-style, hatch-typing]
 
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
@@ -26,11 +26,26 @@ repos:
     hooks:
       - id: check-json5
 
+  # Instead of using the `astral-sh/ruff-pre-commit` hook, use the Hatch "lint" environment. This ensures that settings
+  # and versions between the `pre-commit` hooks and the Hatch environment are aligned.
   - repo: local
     hooks:
-      - id: hatch-lint
-        name: hatch-simple-lint
-        entry: hatch run lint:simple-lint
+      - id: hatch-style
+        name: hatch ruff
+        entry: hatch run lint:style
+        language: system
+        types_or: [python, pyi, jupyter]
+        exclude: src/python_project/__version__.py
+        verbose: true
+
+  # Instead of using the `pre-commit/mirrors-mypy` hook, use the Hatch "lint" environment. Apart from ensuring that
+  # settings and versions between the `pre-commit` hooks and the Hatch environment are aligned, this additionally
+  # removes the need of manually typing out all typed dependencies here.
+  - repo: local
+    hooks:
+      - id: hatch-typing
+        name: hatch mypy
+        entry: hatch run lint:simple-typing
         language: system
         types_or: [python, pyi, jupyter]
         exclude: src/python_project/__version__.py

@@ -62,7 +62,7 @@ jobs:
     with:
       GITHUB_ENVIRONMENT: |-
         ${{ startsWith(github.ref, 'refs/tags') && 'prd'
-         || startsWith(github.ref, 'refs/heads/main') && 'prd'
+         || github.ref == 'refs/heads/main' && 'prd'
          || 'stg' }}
 
 
