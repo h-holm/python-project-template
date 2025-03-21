@@ -19,7 +19,7 @@ if not __package__:  # pragma: no cover
     sys.path.insert(0, str(Path(__file__).parents[1]))
 
 
-from python_project.utils.utils import get_ordinal_suffix, get_time_elapsed_string
+from python_project.utils.utils import get_ordinal_suffix, get_time_elapsed_string, kwargs_logger
 
 
 # Set up logging.
@@ -57,13 +57,13 @@ def fibonacci(n: int) -> int:
 
 
 @app.command()
+@kwargs_logger
 def main(
     nth_number: Annotated[int, typer.Argument(help="The nth Fibonacci number to compute.", min=0, envvar="NTH_NUMBER")],
     log_level: Annotated[LogLevel, typer.Option(help="Log level")] = LogLevel.INFO,
 ) -> None:
     """Log the `nth_number` of the Fibonacci sequence."""
     LOGGER.setLevel(log_level.upper())
-
     start_timestamp = datetime.now(tz=UTC)
     LOGGER.info(f"Script started at: {start_timestamp.strftime(TIMESTAMP_FORMAT)} ({UTC}).")
 

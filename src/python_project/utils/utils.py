@@ -1,11 +1,31 @@
 """Utility functions."""
 
 import logging
+from collections.abc import Callable
 from datetime import timedelta
+from functools import wraps
 from pathlib import Path
+from typing import Any
+
+from tabulate import tabulate
 
 
 LOGGER = logging.getLogger(__name__)
+
+
+def kwargs_logger(func: Callable) -> Callable:
+    """Decorator that logs the input keyword arguments of the wrapped function."""
+
+    @wraps(func)
+    def log_kwargs(*args: Any, **kwargs: Any) -> Any:  # noqa: ANN401
+        table = [["parameter_name", "value"]]
+        for k, v in kwargs.items():
+            table.append([k, v])
+        for row in tabulate(table, headers="firstrow").splitlines():
+            LOGGER.info(row)
+        return func(*args, **kwargs)
+
+    return log_kwargs
 
 
 def is_non_empty_file(file_path: str | Path) -> bool:

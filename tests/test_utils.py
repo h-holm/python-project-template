@@ -3,7 +3,7 @@ from pathlib import Path
 
 import pytest
 
-from python_project.utils.utils import get_ordinal_suffix, get_time_elapsed_string, is_non_empty_file
+from python_project.utils.utils import get_ordinal_suffix, get_time_elapsed_string, is_non_empty_file, kwargs_logger
 
 
 @pytest.mark.parametrize(
@@ -45,3 +45,17 @@ def test_get_time_elapsed_string(timestamp: float | timedelta, expected_output: 
 )
 def test_get_ordinal_suffix(integer: int, expected_output: str) -> None:
     assert get_ordinal_suffix(integer) == expected_output
+
+
+def test_kwargs_logger(caplog: pytest.LogCaptureFixture) -> None:
+    """Verify that the `kwargs_logger` decorator logs the keyword arguments passed to the decorated function."""
+
+    @kwargs_logger
+    def dummy_function(**kwargs: int) -> None:
+        pass
+
+    dummy_function(keyword_argument_one=123, keyword_argument_two=321)
+    assert "keyword_argument_one" in caplog.text
+    assert "123" in caplog.text
+    assert "keyword_argument_two" in caplog.text
+    assert "321" in caplog.text
