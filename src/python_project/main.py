@@ -22,9 +22,6 @@ if not __package__:  # pragma: no cover
 from python_project.utils.utils import get_ordinal_suffix, get_time_elapsed_string, kwargs_logger
 
 
-# Set up logging.
-logging.config.fileConfig(Path(__file__).parents[0] / "logging.conf", disable_existing_loggers=False)
-LOGGER = logging.getLogger()
 TIMESTAMP_FORMAT = "%Y-%m-%d %H:%M:%S"
 
 # Set up the `typer` app.
@@ -76,4 +73,9 @@ def main(
 
 
 if __name__ == "__main__":
+    # Set up logging.
+    logging.config.fileConfig(
+        Path(__file__).parents[0] / "logging.conf", {"datefmt": TIMESTAMP_FORMAT}, disable_existing_loggers=False
+    )
+    LOGGER = logging.getLogger()
     app()
