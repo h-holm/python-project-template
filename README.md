@@ -39,7 +39,7 @@ logic from tests and project metadata
 
 ### [GitHub Actions](./.github/workflows/) [CI/CD](https://www.redhat.com/en/topics/devops/what-is-ci-cd)
 
-On any pull request, target a `stg` staging environment and do the following:
+On any pull request, target a `stg` staging environment and:
 
 * run [ruff](https://github.com/astral-sh/ruff)-based linting and formatting,
 [mypy](https://github.com/python/mypy)-based static type checking, and [pytest](https://docs.pytest.org)-based unit testing;
@@ -48,11 +48,11 @@ On any pull request, target a `stg` staging environment and do the following:
 [Google Cloud Artifact Registry](https://cloud.google.com/artifact-registry/docs);
 * execute a simple integration test on [Google Cloud Run](https://cloud.google.com/run?hl=en).
 
-On merge (or push) into the `main` branch, target a `prd` production environment and perform the same steps as above as
-well as:
+On a commit/tag being merged/pushed into the `main` branch, target a `prd` production environment and:
 
+* perform the same steps as above,
 * deploy a Cloud Run job,
-* promote the container image by adding tags such as `latest`, `main` and the [SemVer](https://semver.org) tag (if any).
+* promote the now-vetted container image by adding tags such as `latest`, `main` and the [SemVer](https://semver.org) tag (if any).
 
 ## Requirements
 
@@ -70,31 +70,31 @@ hatch run python src/python_project/main.py --help          # Uses the "default"
 hatch run default:python src/python_project/main.py --help  # Equivalent to not specifying "default:".
 ```
 
-### Unit Tests
+### Unit Testing
 
-Run the `test` script of the "test" Hatch environment to execute the
-[`pytest`](https://docs.pytest.org/en/stable)-backed unit tests and generate a
-[coverage](https://coverage.readthedocs.io/en/7.6.7) report:
+The `test` Hatch environment defines [scripts](https://hatch.pypa.io/1.13/how-to/run/python-scripts) that can be used
+to execute the [`pytest`](https://docs.pytest.org/en/stable)-backed unit tests, generate a
+[coverage](https://coverage.readthedocs.io/en/7.6.7) report and debug unit tests, e.g.:
 
 ```shell
-hatch run test:test
+hatch run test:test                          # To run all unit tests under the `./tests` subdirectory.
+hatch run test:test tests/test_utils.py      # To execute the `tests/test_utils.py` unit tests.
+hatch run test:debug                         # To perform unit testing in `pytest` debug mode.
+hatch run test:cov-xml                       # To generate a `coverage.xml` that can be consumed by code scanners.
 ```
 
 ### Formatting, Linting and Type Checking
 
-Run the `lint` script of the "lint" Hatch environment to perform (1) formatting and linting using
+The `lint` Hatch environment defines scripts to perform (1) formatting and linting using
 [`ruff`](https://github.com/astral-sh/ruff) and (2) static type checking using
-[`mypy`](https://github.com/python/mypy).
+[`mypy`](https://github.com/python/mypy), e.g.:
 
 ```shell
-hatch run lint:lint
-```
-
-Set up [pre-commit](https://github.com/pre-commit/pre-commit) hooks that always align with the "lint" Hatch
-environment:
-
-```shell
-hatch run lint:hooks
+hatch run lint:lint    # To run a `ruff`-based style check followed by `mypy` type checking.
+hatch run lint:style   # To run (only) a `ruff`-based style check.
+hatch run lint:typing  # To run (only) `mypy`-based type checking.
+hatch run lint:fix     # To attempt to fix issues identified by `ruff`.
+hatch run lint:hooks   # To set up `pre-commit` hooks that always align with the "lint" Hatch environment.
 ```
 
 ### Bumping the Version
