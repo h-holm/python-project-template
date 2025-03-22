@@ -1,5 +1,6 @@
 {
     "cSpell.words": [
+        "caplog",
         "cicd",
         "codeql",
         "editorconfig",
@@ -14,7 +15,7 @@
         "pyproject",
         "pytest",
         "ruff",
-        "typer"
+        "typer",
     ],
     "editor.formatOnSave": true,
     "[markdown]": {
