@@ -19,7 +19,7 @@ if not __package__:  # pragma: no cover
     sys.path.insert(0, str(Path(__file__).parents[1]))
 
 
-from python_project.utils.utils import get_ordinal_suffix, get_time_elapsed_string, kwargs_logger
+from python_project.utils.utils import get_ordinal_suffix, get_time_elapsed_string, pretty_log_dict
 
 
 TIMESTAMP_FORMAT = "%Y-%m-%d %H:%M:%S"
@@ -54,7 +54,6 @@ def fibonacci(n: int) -> int:
 
 
 @app.command()
-@kwargs_logger
 def main(
     nth_number: Annotated[int, typer.Argument(help="The nth Fibonacci number to compute.", min=0, envvar="NTH_NUMBER")],
     log_level: Annotated[LogLevel, typer.Option(help="Log level")] = LogLevel.INFO,
@@ -62,6 +61,9 @@ def main(
 ) -> None:
     """Log the `nth_number` of the Fibonacci sequence."""
     LOGGER.setLevel(log_level.upper())
+
+    # Store the input arguments for logging. Before logging them, check if a file handler is to be added to the logger.
+    input_arguments = locals()
 
     if log_file_path:
         # Set up logging to file.
@@ -76,6 +78,9 @@ def main(
             LOGGER.warning("No console handler formatter was found. Using a default formatter for the file handler.")
         file_handler.setFormatter(formatter)
         LOGGER.addHandler(file_handler)
+
+    LOGGER.info("The following arguments and options will be used:")
+    pretty_log_dict(input_arguments, header=("argument_name", "argument_value"))
 
     start_timestamp = datetime.now(tz=UTC)
     LOGGER.info(f"Script started at {start_timestamp.strftime(TIMESTAMP_FORMAT)} ({UTC})")

@@ -13,6 +13,15 @@ from tabulate import tabulate
 LOGGER = logging.getLogger(__name__)
 
 
+def pretty_log_dict(arguments: dict, header: tuple[str, str] = ("key", "value")) -> None:
+    """Log the keys and values of the input dictionary as a nicely-formatted table."""
+    table = [list(header)]
+    for k, v in arguments.items():
+        table.append([k, v])
+    for row in tabulate(table, headers="firstrow").splitlines():
+        LOGGER.info(row)
+
+
 def kwargs_logger(func: Callable) -> Callable:
     """Decorator that logs the input keyword arguments of the wrapped function."""
 
