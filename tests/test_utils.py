@@ -1,9 +1,17 @@
+import logging
+import tempfile
 from datetime import timedelta
 from pathlib import Path
 
 import pytest
 
-from python_project.utils.utils import get_ordinal_suffix, get_time_elapsed_string, is_non_empty_file, kwargs_logger
+from python_project.utils.utils import (
+    add_file_handler,
+    get_ordinal_suffix,
+    get_time_elapsed_string,
+    is_non_empty_file,
+    kwargs_logger,
+)
 
 
 @pytest.mark.parametrize(
@@ -49,13 +57,51 @@ def test_get_ordinal_suffix(integer: int, expected_output: str) -> None:
 
 def test_kwargs_logger(caplog: pytest.LogCaptureFixture) -> None:
     """Verify that the `kwargs_logger` decorator logs the keyword arguments passed to the decorated function."""
+    caplog.set_level(logging.DEBUG)
 
     @kwargs_logger
     def dummy_function(**kwargs: int) -> None:
         pass
 
     dummy_function(keyword_argument_one=123, keyword_argument_two=321)
+
     assert "keyword_argument_one" in caplog.text
     assert "123" in caplog.text
     assert "keyword_argument_two" in caplog.text
     assert "321" in caplog.text
+
+
+def test_add_file_handler(caplog: pytest.LogCaptureFixture) -> None:
+    caplog.set_level(logging.DEBUG)
+
+    # Verify that the `add_file_handler` function adds a file handler to the logger.
+    logger = logging.getLogger("test_logger")
+    with tempfile.TemporaryDirectory() as temp_dir:
+        log_file_path = Path(temp_dir) / "test.log"
+        add_file_handler(logger, log_file_path)
+
+        message = "This message should be logged to the file."
+        logger.debug(message)
+
+        with log_file_path.open("r") as log_file:
+            assert message in log_file.read()
+
+    # If the logger already had at least one handler, the format of the file handler added by the `add_file_handler`
+    # function should be the same as the format of the first handler.
+    logger = logging.getLogger("test_logger")
+    logger.handlers.clear()
+
+    preexisting_handler = logging.StreamHandler()
+    dummy_log_prefix = "DUMMY PREFIX"
+    preexisting_handler.setFormatter(logging.Formatter(f"{dummy_log_prefix}: %(message)s"))
+    logger.addHandler(preexisting_handler)
+
+    with tempfile.TemporaryDirectory() as temp_dir:
+        log_file_path = Path(temp_dir) / "test.log"
+        add_file_handler(logger, log_file_path)
+
+        message = "This message should be logged to the file."
+        logger.debug(message)
+
+        with log_file_path.open("r") as log_file:
+            assert f"{dummy_log_prefix}: {message}" in log_file.read()

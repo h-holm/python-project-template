@@ -85,3 +85,18 @@ def kwargs_logger(func: Callable) -> Callable:
         return func(*args, **kwargs)
 
     return log_kwargs
+
+
+def add_file_handler(logger: logging.Logger, log_file_path: Path, datefmt: str = "%Y-%m-%d %H:%M:%S") -> None:
+    """Add a file handler to the input `logger` in-place."""
+    file_handler = logging.FileHandler(log_file_path)
+    if logger.handlers and logger.handlers[0].formatter:
+        # Use the same formatter as for the console output. The `._fmt` attribute of a `logging.Formatter` is pre-
+        # fixed with an underscore, indicating that it is intended for private use, but given the long history and
+        # widespread usage of the `logging` module, the attribute is unlikely to change. Hence, we use it here.
+        formatter = logging.Formatter(logger.handlers[0].formatter._fmt, datefmt=datefmt)  # noqa: SLF001
+    else:
+        formatter = logging.Formatter(datefmt=datefmt)
+        logger.warning("No console handler formatter was found. Using a default formatter for the file handler.")
+    file_handler.setFormatter(formatter)
+    logger.addHandler(file_handler)

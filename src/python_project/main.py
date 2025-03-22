@@ -19,7 +19,7 @@ if not __package__:  # pragma: no cover
     sys.path.insert(0, str(Path(__file__).parents[1]))
 
 
-from python_project.utils.utils import get_ordinal_suffix, get_time_elapsed_string, pretty_log_dict
+from python_project.utils.utils import add_file_handler, get_ordinal_suffix, get_time_elapsed_string, pretty_log_dict
 
 
 TIMESTAMP_FORMAT = "%Y-%m-%d %H:%M:%S"
@@ -66,18 +66,7 @@ def main(
     input_arguments = locals()
 
     if log_file_path:
-        # Set up logging to file.
-        file_handler = logging.FileHandler(log_file_path)
-        if LOGGER.handlers and LOGGER.handlers[0].formatter:
-            # Use the same formatter as for the console output. The `._fmt` attribute of a `logging.Formatter` is pre-
-            # fixed with an underscore, indicating that it is intended for private use, but given the long history and
-            # widespread usage of the `logging` module, the attribute is unlikely to change. Hence, we use it here.
-            formatter = logging.Formatter(LOGGER.handlers[0].formatter._fmt, datefmt=TIMESTAMP_FORMAT)  # noqa: SLF001
-        else:
-            formatter = logging.Formatter(datefmt=TIMESTAMP_FORMAT)
-            LOGGER.warning("No console handler formatter was found. Using a default formatter for the file handler.")
-        file_handler.setFormatter(formatter)
-        LOGGER.addHandler(file_handler)
+        add_file_handler(LOGGER, log_file_path, datefmt=TIMESTAMP_FORMAT)
 
     LOGGER.info("The following arguments and options will be used:")
     pretty_log_dict(input_arguments, header=("argument_name", "argument_value"))
