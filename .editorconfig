@@ -14,10 +14,10 @@ trim_trailing_whitespace = true
 indent_size = 2
 quote_type = single
 
-[*.{json}]
+[*.{json,}]
 quote_type = double
 
-[*.{md}]
+[*.{md,}]
 indent_size = 2
 # In Markdown, blank lines can be forced by ending a line with two spaces.
 trim_trailing_whitespace = false
