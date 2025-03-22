@@ -4,20 +4,6 @@ on:
   push:
     tags: ['**']
     branches: ['main']
-    paths:
-      # Trigger on any change in `./src` except for changes in Markdown files.
-      - 'src/**'
-      - '!src/**.md'
-      # Trigger on any change to the unit tests.
-      - tests/**/*.py
-      # Trigger on any change to dependencies.
-      - pyproject.toml
-      - 'requirements**.txt'
-      # Trigger on any change to the container image.
-      - Dockerfile
-      - .dockerignore
-      # Trigger on any change to the GitHub actions workflows.
-      - .github/workflows/**.yaml
 
 concurrency:
   group: 'deploy-${{ github.workflow }}-${{ github.ref || github.run_id }}'
@@ -28,9 +14,37 @@ defaults:
     shell: bash
 
 jobs:
+  # Check which file(s) were changed, in order to decide which jobs to run.
+  paths-filter:
+    runs-on: ubuntu-latest
+    outputs:
+      application-relevant-files-changed: ${{ steps.filter.outputs.application-relevant-files }}
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+    - name: Filter Paths
+      id: filter
+      uses: dorny/paths-filter@v3.0.2  # Pinned to a specific version to avoid breaking changes.
+      with:
+        # Detect changes to `./src` code file, unit tests, dependencies, the (building of the) container image, the
+        # GitHub Actions workflows.
+        filters: |
+          application-relevant-files:
+            - 'src/**'
+            - 'tests/**/*.py'
+            - 'pyproject.toml'
+            - 'requirements**.txt'
+            - 'Dockerfile'
+            - '.dockerignore'
+            - '.github/workflows/**'
+
   integration-test:
     name: Integration Test
     uses: ./.github/workflows/integration-test.yaml
+    needs: [paths-filter]
+    if: needs.paths-filter.outputs.application-relevant-files-changed == 'true'
     secrets: inherit
     permissions:
       actions: read
@@ -46,7 +60,8 @@ jobs:
   deploy-cloud-run-job:
     name: Deploy Cloud Run Job
     runs-on: ubuntu-latest
-    needs: [integration-test]
+    needs: [paths-filter, integration-test]
+    if: needs.paths-filter.outputs.application-relevant-files-changed == 'true'
 
     # If a commit OR tag was pushed into `main`, set the GitHub environment to "prd", else "stg".
     environment: |-
@@ -103,7 +118,8 @@ jobs:
   promote-image:
     name: Promote Image
     uses: ./.github/workflows/promote-image.yaml
-    needs: [integration-test, deploy-cloud-run-job]
+    needs: [paths-filter, integration-test, deploy-cloud-run-job]
+    if: needs.paths-filter.outputs.application-relevant-files-changed == 'true'
     secrets: inherit
     permissions:
       contents: read
