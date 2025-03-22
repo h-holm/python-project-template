@@ -29,7 +29,9 @@ def test_is_non_empty_file(file_path: str | Path, expected_output: bool) -> None
 @pytest.mark.parametrize(
     ("timestamp", "expected_output"),
     [
-        (61, "1 minute, 1 second"),
+        (0, "0 minutes, 0 seconds"),
+        (1, "0 minutes, 1 second"),
+        (62, "1 minute, 2 seconds"),
         (60 * 60, "1 hour, 0 minutes, 0 seconds"),
         (60 * 60 * 24 + 123, "1 day, 0 hours, 2 minutes, 3 seconds"),
         (60 * 60 * 50 + 120, "2 days, 2 hours, 2 minutes, 0 seconds"),
@@ -46,8 +48,23 @@ def test_get_time_elapsed_string(timestamp: float | timedelta, expected_output: 
         (1, "st"),
         (2, "nd"),
         (3, "rd"),
-        (4, "th"),
-        (-205, "th"),
+    ]
+    + [
+        (-1, "st"),
+        (-2, "nd"),
+        (-3, "rd"),
+    ]
+    # All numbers between 4 and 20 have the suffix 'th'.
+    + [(i, "th") for i in range(4, 21)]
+    # All numbers between -20 and -4 have the suffix 'th'.
+    + [(-i, "th") for i in range(4, 21)]
+    + [
+        (120, "th"),
+        (121, "st"),
+        (122, "nd"),
+        (123, "rd"),
+        (124, "th"),
+        (-225, "th"),
         (1306, "th"),
     ],
 )

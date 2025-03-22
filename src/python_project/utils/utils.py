@@ -51,16 +51,12 @@ def get_time_elapsed_string(elapsed_time: float | timedelta) -> str:
 
 
 def get_ordinal_suffix(integer: int) -> str:
-    """Given an integer, return the correct ordinal suffix, e.g., 'st' if the integer is 1 (first)."""
-    match str(integer)[-1]:
-        case "1":
-            return "st"
-        case "2":
-            return "nd"
-        case "3":
-            return "rd"
-        case _:
-            return "th"
+    """Given an integer, return the correct ordinal suffix, e.g., 'st' (for 'first') if the integer is 1."""
+    # All numbers ending in 10, 11, ..., 20 have the suffix 'th'.
+    if 10 <= abs(integer) % 100 <= 20:  # noqa: PLR2004
+        return "th"
+    # All other numbers have a suffix based on the last digit.
+    return {1: "st", 2: "nd", 3: "rd"}.get(abs(integer) % 10, "th")
 
 
 def pretty_log_dict(arguments: dict, header: tuple[str, str] = ("key", "value")) -> None:
