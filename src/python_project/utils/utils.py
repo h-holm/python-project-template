@@ -1,8 +1,13 @@
 """Utility functions."""
 
 import logging
+from collections.abc import Callable
 from datetime import timedelta
+from functools import wraps
 from pathlib import Path
+from typing import Any
+
+from tabulate import tabulate
 
 
 LOGGER = logging.getLogger(__name__)
@@ -56,3 +61,42 @@ def get_ordinal_suffix(integer: int) -> str:
             return "rd"
         case _:
             return "th"
+
+
+def pretty_log_dict(arguments: dict, header: tuple[str, str] = ("key", "value")) -> None:
+    """Log the keys and values of the input dictionary as a nicely-formatted table."""
+    table = [list(header)]
+    for k, v in arguments.items():
+        table.append([k, v])
+    for row in tabulate(table, headers="firstrow").splitlines():
+        LOGGER.info(row)
+
+
+def kwargs_logger(func: Callable) -> Callable:
+    """Decorator that logs the input keyword arguments of the wrapped function."""
+
+    @wraps(func)
+    def log_kwargs(*args: Any, **kwargs: Any) -> Any:  # noqa: ANN401
+        table = [["parameter_name", "value"]]
+        for k, v in kwargs.items():
+            table.append([k, v])
+        for row in tabulate(table, headers="firstrow").splitlines():
+            LOGGER.info(row)
+        return func(*args, **kwargs)
+
+    return log_kwargs
+
+
+def add_file_handler(logger: logging.Logger, log_file_path: Path, datefmt: str = "%Y-%m-%d %H:%M:%S") -> None:
+    """Add a file handler to the input `logger` in-place."""
+    file_handler = logging.FileHandler(log_file_path)
+    if logger.handlers and logger.handlers[0].formatter:
+        # Use the same formatter as for the console output. The `._fmt` attribute of a `logging.Formatter` is pre-
+        # fixed with an underscore, indicating that it is intended for private use, but given the long history and
+        # widespread usage of the `logging` module, the attribute is unlikely to change. Hence, we use it here.
+        formatter = logging.Formatter(logger.handlers[0].formatter._fmt, datefmt=datefmt)  # noqa: SLF001
+    else:
+        formatter = logging.Formatter(datefmt=datefmt)
+        logger.warning("No console handler formatter was found. Using a default formatter for the file handler.")
+    file_handler.setFormatter(formatter)
+    logger.addHandler(file_handler)
