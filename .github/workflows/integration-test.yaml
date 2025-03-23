@@ -56,7 +56,7 @@ jobs:
     name: CodeQL Analysis
     uses: ./.github/workflows/codeql-analysis.yaml
     needs: [paths-filter]
-    if: needs.paths-filter.outputs.application-relevant-files-changed == 'true'
+    if: needs.paths-filter.outputs.application-relevant-files-changed == 'true' || startsWith(github.ref, 'refs/tags/')
     permissions:
       actions: read
       contents: read
@@ -67,7 +67,7 @@ jobs:
     name: Build and Push Image
     uses: ./.github/workflows/build-and-push-image.yaml
     needs: [paths-filter]
-    if: needs.paths-filter.outputs.application-relevant-files-changed == 'true'
+    if: needs.paths-filter.outputs.application-relevant-files-changed == 'true' || startsWith(github.ref, 'refs/tags/')
     secrets: inherit
     permissions:
       contents: read
@@ -81,11 +81,10 @@ jobs:
          || github.ref == 'refs/heads/main' && 'prd'
          || 'stg' }}
 
-
   integration-test:
     name: Integration Test
     needs: [paths-filter, build-and-push-image]
-    if: needs.paths-filter.outputs.application-relevant-files-changed == 'true'
+    if: needs.paths-filter.outputs.application-relevant-files-changed == 'true' || startsWith(github.ref, 'refs/tags/')
     runs-on: ubuntu-latest
 
     # If this workflow is called from another workflow, use the `GITHUB_ENVIRONMENT` input variable. Otherwise, set the

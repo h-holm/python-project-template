@@ -44,7 +44,7 @@ jobs:
     name: Integration Test
     uses: ./.github/workflows/integration-test.yaml
     needs: [paths-filter]
-    if: needs.paths-filter.outputs.application-relevant-files-changed == 'true'
+    if: needs.paths-filter.outputs.application-relevant-files-changed == 'true' || startsWith(github.ref, 'refs/tags/')
     secrets: inherit
     permissions:
       actions: read
@@ -61,7 +61,7 @@ jobs:
     name: Deploy Cloud Run Job
     runs-on: ubuntu-latest
     needs: [paths-filter, integration-test]
-    if: needs.paths-filter.outputs.application-relevant-files-changed == 'true'
+    if: needs.paths-filter.outputs.application-relevant-files-changed == 'true' || startsWith(github.ref, 'refs/tags/')
 
     # If a commit OR tag was pushed into `main`, set the GitHub environment to "prd", else "stg".
     environment: |-
@@ -119,7 +119,7 @@ jobs:
     name: Promote Image
     uses: ./.github/workflows/promote-image.yaml
     needs: [paths-filter, integration-test, deploy-cloud-run-job]
-    if: needs.paths-filter.outputs.application-relevant-files-changed == 'true'
+    if: needs.paths-filter.outputs.application-relevant-files-changed == 'true' || startsWith(github.ref, 'refs/tags/')
     secrets: inherit
     permissions:
       contents: read
