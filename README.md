@@ -47,8 +47,8 @@ testing;
 * perform a [CodeQL](https://codeql.github.com) vulnerability scan;
 * build and push a well-labeled container image to a
 [Google Cloud Artifact Registry](https://cloud.google.com/artifact-registry/docs);
-* execute an integration test on [Google Cloud Run](https://cloud.google.com/run?hl=en) by running the application
-logic end-to-end as a container job.
+* execute an integration test on [Google Cloud Run](https://cloud.google.com/run?hl=en) that runs the application
+logic end-to-end.
 
 On a commit/tag being merged/pushed (in)to the `main` branch, target a `prd` production environment and:
 
@@ -78,8 +78,8 @@ hatch run default:python src/python_project/main.py --help  # Equivalent to not 
 ### Unit Testing
 
 The `test` Hatch environment defines [scripts](https://hatch.pypa.io/1.13/how-to/run/python-scripts) that can be used
-to execute the [`pytest`](https://docs.pytest.org/en/stable)-backed unit tests, generate a
-[coverage](https://coverage.readthedocs.io/en/7.6.7) report and debug unit tests, e.g.:
+to execute and debug the [`pytest`](https://docs.pytest.org/en/stable)-backed unit tests and generate a
+[coverage](https://coverage.readthedocs.io/en/7.6.7) report:
 
 ```shell
 hatch run test:test                      # To run all unit tests under the `./tests` subdirectory.
@@ -90,9 +90,9 @@ hatch run test:cov-xml                   # To generate a `coverage.xml` that can
 
 ### Formatting, Linting and Type Checking
 
-The `lint` Hatch environment defines scripts to perform (1) formatting and linting using
-[`ruff`](https://github.com/astral-sh/ruff) and (2) static type checking using
-[`mypy`](https://github.com/python/mypy), e.g.:
+The `lint` Hatch environment defines scripts to (1) perform [`ruff`](https://github.com/astral-sh/ruff)-based
+formatting and linting, (2) run [`mypy`](https://github.com/python/mypy)-based static type checking and (3) set up
+[`pre-commit`](https://github.com/pre-commit/pre-commit) hooks synced with the environment:
 
 ```shell
 hatch run lint:lint    # To run a `ruff`-based style check followed by `mypy` type checking.
