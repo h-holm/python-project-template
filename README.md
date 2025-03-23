@@ -47,9 +47,10 @@ testing;
 * perform a [CodeQL](https://codeql.github.com) vulnerability scan;
 * build and push a well-labeled container image to a
 [Google Cloud Artifact Registry](https://cloud.google.com/artifact-registry/docs);
-* execute a simple integration test on [Google Cloud Run](https://cloud.google.com/run?hl=en).
+* execute an integration test on [Google Cloud Run](https://cloud.google.com/run?hl=en) by running the application
+logic end-to-end as a container job.
 
-On a commit/tag being merged/pushed into the `main` branch, target a `prd` production environment and:
+On a commit/tag being merged/pushed (in)to the `main` branch, target a `prd` production environment and:
 
 * perform the same steps as above;
 * deploy a Cloud Run job;
@@ -58,7 +59,9 @@ tag (if any).
 
 ## Requirements
 
-Ensure [Hatch](https://hatch.pypa.io/latest) is [installed](https://hatch.pypa.io/latest/install) on your system.
+Ensure [Hatch](https://hatch.pypa.io/latest) is [installed](https://hatch.pypa.io/latest/install) on your system. With
+Hatch installed, there is no need to manually create environments and install dependencies; that is all handled by
+Hatch.
 
 ## Development
 
@@ -97,6 +100,15 @@ hatch run lint:style   # To run (only) a `ruff`-based style check.
 hatch run lint:typing  # To run (only) `mypy`-based type checking.
 hatch run lint:fix     # To attempt to fix issues identified by `ruff`.
 hatch run lint:hooks   # To set up `pre-commit` hooks that always align with the "lint" Hatch environment.
+```
+
+### Upgrading Dependencies
+
+```shell
+hatch run upgrade-all                          # To upgrade all Python dependencies of the `default` Hatch environment.
+hatch run upgrade-pkg $PACKAGE_NAME            # To upgrade $PACKAGE_NAME in the `default` Hatch environment.
+hatch run $ENV_NAME:upgrade-all                # To upgrade all Python dependencies in the specified Hatch environment.
+hatch run $ENV_NAME:upgrade-pkg $PACKAGE_NAME  # To upgrade $PACKAGE_NAME in the specified Hatch environment.
 ```
 
 ### Bumping the Version
