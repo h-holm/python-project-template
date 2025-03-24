@@ -61,15 +61,11 @@ def main(
 ) -> None:
     """Log the `nth_number` of the Fibonacci sequence."""
     LOGGER.setLevel(log_level.upper())
-
-    # Store the input arguments for logging. Before logging them, check if a file handler is to be added to the logger.
-    input_arguments = locals()
-
     if log_file_path:
         add_file_handler(LOGGER, log_file_path, datefmt=TIMESTAMP_FORMAT)
 
     LOGGER.info("The following arguments and options will be used:")
-    pretty_log_dict(input_arguments, header=("argument_name", "argument_value"))
+    pretty_log_dict(locals(), header=("argument_name", "argument_value"))
 
     start_timestamp = datetime.now(tz=UTC)
     LOGGER.info(f"Script started at {start_timestamp.strftime(TIMESTAMP_FORMAT)} ({UTC})")
