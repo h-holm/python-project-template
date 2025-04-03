@@ -14,12 +14,17 @@ import typer
 # https://packaging.python.org/en/latest/discussions/src-layout-vs-flat-layout/#running-a-command-line-interface-from-source-with-src-layout
 if not __package__:  # pragma: no cover
     # Add the grandparent directory to `sys.path` to enable running all of the following:
-    # - `python path/to/this/repo/src/python_project/main.py`   from anywhere,
-    # - `hatch run python src/python_project/main.py`           from the root of this repo,
+    # - `python path/to/this/repo/src/python_project_template/main.py`   from anywhere,
+    # - `hatch run python src/python_project_template/main.py`           from the root of this repo,
     sys.path.insert(0, str(Path(__file__).parents[1]))
 
 
-from python_project.utils.utils import add_file_handler, get_ordinal_suffix, get_time_elapsed_string, pretty_log_dict
+from python_project_template.utils.utils import (
+    add_file_handler,
+    get_ordinal_suffix,
+    get_time_elapsed_string,
+    pretty_log_dict,
+)
 
 
 TIMESTAMP_FORMAT = "%Y-%m-%d %H:%M:%S"

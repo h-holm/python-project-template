@@ -21,9 +21,9 @@ pygments==2.19.1 \
     --hash=sha256:61c16d2a8576dc0649d9f39e089b5f02bcd27fba10d8fb4dcc28173f7a45151f \
     --hash=sha256:9ea1544ad55cecf4b8242fab6dd35a93bbce657034b0611ee383099054ab6d8c
     # via rich
-rich==13.9.4 \
-    --hash=sha256:439594978a49a09530cff7ebc4b5c7103ef57baf48d5ea3184f21d9a2befa098 \
-    --hash=sha256:6049d5e6ec054bf2779ab3358186963bac2ea89175919d699e378b99738c2a90
+rich==14.0.0 \
+    --hash=sha256:1c9491e1951aac09caffd42f448ee3d04e58923ffe14993f6e83068dc395d7e0 \
+    --hash=sha256:82f1bc23a6a21ebca4ae0c45af9bdbc492ed20231dcb63f297d6d1021a9d5725
     # via typer
 shellingham==1.5.4 \
     --hash=sha256:7ecfff8f2fd72616f7481040475a65b2bf8af90a56c89140852d1120324e8686 \
@@ -37,7 +37,7 @@ typer==0.15.2 \
     --hash=sha256:46a499c6107d645a9c13f7ee46c5d5096cae6f5fc57dd11eccbbb9ae3e44ddfc \
     --hash=sha256:ab2fab47533a813c49fe1f16b1a370fd5819099c00b119e0633df65f22144ba5
     # via hatch.envs.default
-typing-extensions==4.13.0 \
-    --hash=sha256:0a4ac55a5820789d87e297727d229866c9650f6521b64206413c4fbada24d95b \
-    --hash=sha256:c8dd92cc0d6425a97c18fbb9d1954e5ff92c1ca881a309c45f06ebc0b79058e5
+typing-extensions==4.13.1 \
+    --hash=sha256:4b6cf02909eb5495cfbc3f6e8fd49217e6cc7944e145cdda8caa3734777f9e69 \
+    --hash=sha256:98795af00fb9640edec5b8e31fc647597b4691f099ad75f469a2616be1a76dff
     # via typer

@@ -5,7 +5,7 @@ from pathlib import Path
 
 import pytest
 
-from python_project.utils.utils import (
+from python_project_template.utils.utils import (
     add_file_handler,
     get_ordinal_suffix,
     get_time_elapsed_string,
