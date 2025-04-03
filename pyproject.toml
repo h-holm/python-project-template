@@ -110,11 +110,6 @@ extra-dependencies = [
 ]
 
 [tool.hatch.envs.lint.scripts]
-# Set up and run `pre-commit` hooks.
-hooks = [
-  "python -m pre_commit install",
-  "python -m pre_commit",
-]
 # Check the code style and formatting.
 style = [
   "echo \"VERSION: `python -m ruff --version`\"",
@@ -143,6 +138,12 @@ simple-typing = [
 lint = [
   "style",
   "typing",
+]
+# Set up and run `pre-commit` hooks. Run the `lint` script to ensure any necessary library stubs are installed.
+hooks = [
+  "python -m pre_commit install",
+  "typing",
+  "python -m pre_commit",
 ]
 
 ##################
