@@ -17,9 +17,9 @@ RUN uv pip install --no-cache-dir -r requirements.txt
 # Include only the source code.
 COPY ./src .
 
-ENTRYPOINT [ "python", "python_project/main.py" ]
+ENTRYPOINT [ "python", "python_project_template/main.py" ]
 
-LABEL name="python-project"
-LABEL maintainer="no-reply@email.com"
+LABEL name="python-project-template"
+LABEL maintainer="https://github.com/h-holm"
 LABEL description="A template Python project"
-LABEL url="https://github.com/h-holm/python-project"
+LABEL url="https://github.com/h-holm/python-project-template"

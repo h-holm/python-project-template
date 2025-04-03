@@ -15,13 +15,13 @@ dependencies = []
 description = "Python template project using the Hatch project manager."
 dynamic = ["version"]
 license = { file = "LICENSE" }
-name = "python-project"
+name = "python-project-template"
 readme = "README.md"
 requires-python = ">=3.13"
 
 [project.urls]
-Documentation = "https://github.com/h-holm/python-project"
-Source = "https://github.com/h-holm/python-project"
+Documentation = "https://github.com/h-holm/python-project-template"
+Source = "https://github.com/h-holm/python-project-template"
 
 #########
 # Hatch #
@@ -34,7 +34,7 @@ metadata.allow-direct-references = true
 requires = ["hatch-pip-compile~=1.11.3"]
 
 [tool.hatch.version]
-path = "src/python_project/__version__.py"
+path = "src/python_project_template/__version__.py"
 raw-options = { version_scheme = "no-guess-dev" }
 
 ######################
@@ -86,7 +86,7 @@ extra-dependencies = [
 
 [tool.hatch.envs.test.scripts]
 debug = "python -m pytest --pdb"
-test = "python -m pytest --verbose --cov-report=term-missing --cov=src/python_project {args}"
+test = "python -m pytest --verbose --cov-report=term-missing --cov=src/python_project_template {args}"
 no-cov = "test --no-cov {args}"
 cov-xml = "test --cov-report=xml"
 
@@ -151,7 +151,7 @@ hooks = [
 ##################
 
 [tool.coverage.paths]
-source = ["src/python_project"]
+source = ["src/python_project_template"]
 
 [tool.coverage.report]
 exclude_lines = ["pragma: no cover", "if __name__ == .__main__.:"]
@@ -159,15 +159,15 @@ skip_empty = true
 
 [tool.coverage.run]
 branch = true
-omit = ["src/python_project/__version__.py", "tests/*"]
+omit = ["src/python_project_template/__version__.py", "tests/*"]
 relative_files = true
-source = ["src/python_project"]
+source = ["src/python_project_template"]
 
 [tool.mypy]
 check_untyped_defs = true
 disallow_untyped_defs = true
 disallow_any_unimported = true
-files = ["src/python_project", "tests"]
+files = ["src/python_project_template", "tests"]
 # Set to "silent" to not follow.
 follow_imports = "normal"
 no_implicit_optional = true
@@ -179,7 +179,7 @@ warn_return_any = true
 warn_unused_ignores = true
 
 [tool.pytest.ini_options]
-addopts = "--cov=src/python_project --cov-report=term-missing --doctest-glob='*.md'"
+addopts = "--cov=src/python_project_template --cov-report=term-missing --doctest-glob='*.md'"
 asyncio_default_fixture_loop_scope = "function"
 asyncio_mode = "strict"
 minversion = "8.3.5"
@@ -187,7 +187,7 @@ pythonpath = ["src"]
 testpaths = ["tests"]
 
 [tool.ruff]
-exclude = ["src/python_project/__version__.py"]
+exclude = ["src/python_project_template/__version__.py"]
 indent-width = 4
 line-length = 120
 target-version = "py313"
@@ -208,7 +208,7 @@ ignore = [
 ban-relative-imports = "all"
 
 [tool.ruff.lint.isort]
-known-first-party = ["python_project"]
+known-first-party = ["python_project_template"]
 lines-after-imports = 2
 
 [tool.ruff.lint.per-file-ignores]
