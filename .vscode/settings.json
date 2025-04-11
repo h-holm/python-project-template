@@ -1,8 +1,11 @@
 {
     "cSpell.words": [
+        "asyncio",
+        "behaviour",
         "caplog",
         "cicd",
         "codeql",
+        "docstrings",
         "editorconfig",
         "flake8",
         "gcloud",
@@ -12,6 +15,7 @@
         "isort",
         "mypy",
         "oidc",
+        "pydantic",
         "pyproject",
         "pytest",
         "ruff",

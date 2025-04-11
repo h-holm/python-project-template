@@ -1,5 +1,6 @@
-"""Utility functions."""
+"""Utilities."""
 
+import enum
 import logging
 from collections.abc import Callable
 from datetime import timedelta
@@ -11,6 +12,16 @@ from tabulate import tabulate
 
 
 LOGGER = logging.getLogger(__name__)
+
+
+class LogLevel(str, enum.Enum):
+    """Log level."""
+
+    CRITICAL = "critical"
+    ERROR = "error"
+    WARNING = "warning"
+    INFO = "info"
+    DEBUG = "debug"
 
 
 def is_non_empty_file(file_path: str | Path) -> bool:

@@ -1,6 +1,5 @@
 """Main entrypoint of a Python application that outputs the n:th number in the Fibonacci sequence."""
 
-import enum
 import functools
 import logging.config
 import sys
@@ -20,6 +19,7 @@ if not __package__:  # pragma: no cover
 
 
 from python_project_template.utils.utils import (
+    LogLevel,
     add_file_handler,
     get_ordinal_suffix,
     get_time_elapsed_string,
@@ -31,16 +31,6 @@ TIMESTAMP_FORMAT = "%Y-%m-%d %H:%M:%S"
 
 # Set up the `typer` app.
 app = typer.Typer()
-
-
-class LogLevel(str, enum.Enum):
-    """Log level."""
-
-    CRITICAL = "critical"
-    ERROR = "error"
-    WARNING = "warning"
-    INFO = "info"
-    DEBUG = "debug"
 
 
 @functools.lru_cache(None)
