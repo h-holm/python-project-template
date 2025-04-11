@@ -6,5 +6,5 @@
     // Features to add to the dev container. More info: https://containers.dev/features.
     // "features": {},
     // Use 'postCreateCommand' to run commands after the container is created.
-    "postCreateCommand": "pipx install hatch && hatch env create && hatch env create lint && hatch env create test"
+    "postCreateCommand": "hatch env create && hatch env create lint && hatch env create test"
 }
