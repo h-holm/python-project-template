@@ -31,7 +31,7 @@ Source = "https://github.com/h-holm/python-project-template"
 metadata.allow-direct-references = true
 
 [tool.hatch.env]
-requires = ["hatch-pip-compile~=1.11.3"]
+requires = ["hatch-pip-compile~=1.11.4"]
 
 [tool.hatch.version]
 path = "src/python_project_template/__version__.py"
@@ -78,9 +78,9 @@ type = "pip-compile"
 [tool.hatch.envs.test]
 # Use `extra-dependencies` to inherit and extend upon the dependencies of the default env.
 extra-dependencies = [
-  "pytest~=8.3.5",
+  "pytest~=8.4.0",
   "pytest-asyncio~=1.0.0",
-  "pytest-cov~=6.1.1",
+  "pytest-cov~=6.2.1",
   "pytest-mock~=3.14.1",
 ]
 
@@ -104,9 +104,9 @@ extra-dependencies = [
   "mypy~=1.16.0",
   "pip~=25.1.1",  # To enable `mypy` to `pip install` stubs.
   "pre-commit~=4.2.0",
-  "pydantic~=2.11.5",
-  "pytest~=8.3.5",
-  "ruff~=0.11.12",
+  "pydantic~=2.11.7",
+  "pytest~=8.4.0",
+  "ruff~=0.11.13",
 ]
 
 [tool.hatch.envs.lint.scripts]
@@ -182,7 +182,7 @@ warn_unused_ignores = true
 addopts = "--cov=src/python_project_template --cov-report=term-missing --doctest-glob='*.md'"
 asyncio_default_fixture_loop_scope = "function"
 asyncio_mode = "strict"
-minversion = "8.3.5"
+minversion = "8.4.0"
 pythonpath = ["src"]
 testpaths = ["tests"]
 
