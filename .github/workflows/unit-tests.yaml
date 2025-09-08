@@ -25,7 +25,7 @@ jobs:
       # `tool.hatch.envs.test.matrix` entry in the `pyproject.toml` config defines all Python versions to test against.
       # The `vars.PYTHON_VERSION` we use here is therefore only used to `pip install` Hatch itself.
       - name: Set Up Python ${{ vars.PYTHON_VERSION }}
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v6
         with:
           python-version: ${{ vars.PYTHON_VERSION }}
 
