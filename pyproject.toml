@@ -104,9 +104,9 @@ extra-dependencies = [
   "mypy~=1.18.2",
   "pip~=25.2",  # To enable `mypy` to `pip install` stubs.
   "pre-commit~=4.3.0",
-  "pydantic~=2.11.9",
+  "pydantic~=2.11.10",
   "pytest~=8.4.2",
-  "ruff~=0.13.2",
+  "ruff~=0.13.3",
 ]
 
 [tool.hatch.envs.lint.scripts]
