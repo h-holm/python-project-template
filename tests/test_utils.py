@@ -1,7 +1,7 @@
 import logging
 import tempfile
-from datetime import timedelta
 from pathlib import Path
+from typing import TYPE_CHECKING
 
 import pytest
 
@@ -12,6 +12,10 @@ from python_project_template.utils.utils import (
     is_non_empty_file,
     kwargs_logger,
 )
+
+
+if TYPE_CHECKING:
+    from datetime import timedelta
 
 
 @pytest.mark.parametrize(
