@@ -7,7 +7,7 @@ authors = [{ name = "Henrik Holm", email = "no-reply@email.com" }]
 classifiers = [
   "Programming Language :: Python",
   "Programming Language :: Python :: 3",
-  "Programming Language :: Python :: 3.13",
+  "Programming Language :: Python :: 3.14",
   "Programming Language :: Python :: Implementation :: CPython",
   "Programming Language :: Python :: Implementation :: PyPy",
 ]
@@ -17,7 +17,7 @@ dynamic = ["version"]
 license = { file = "LICENSE" }
 name = "python-project-template"
 readme = "README.md"
-requires-python = ">=3.13"
+requires-python = ">=3.14"
 
 [project.urls]
 Documentation = "https://github.com/h-holm/python-project-template"
@@ -44,7 +44,7 @@ raw-options = { version_scheme = "no-guess-dev" }
 # "Base" env to ensure the same Python version is used across all Hatch envs. Note that this env is not supposed to be
 # used directly, but rather as a template for other envs.
 [tool.hatch.envs.base]
-python = "3.13"
+python = "3.14"
 # Skip (local) installation of the project itself. This assumes the project is not supposed to be packaged.
 skip-install = true
 template = "base"
@@ -93,7 +93,7 @@ cov-xml = "test --cov-report=xml"
 # By leveraging the Hatch matrix feature we can test against multiple Python versions.
 [[tool.hatch.envs.test.matrix]]
 template = ["test"]
-python = ["3.13"]
+python = ["3.14"]
 
 ####################
 # Lint Environment #
@@ -104,10 +104,10 @@ extra-dependencies = [
   "mypy~=1.18.2",
   "pip~=25.2",  # To enable `mypy` to `pip install` stubs.
   "pre-commit~=4.3.0",
-  "pydantic~=2.12.0",
-  "pydantic-core~=2.41.1",
+  "pydantic~=2.12.3",
+  "pydantic-core~=2.41.4",
   "pytest~=8.4.2",
-  "ruff~=0.14.0",
+  "ruff~=0.14.1",
 ]
 
 [tool.hatch.envs.lint.scripts]
@@ -191,7 +191,7 @@ testpaths = ["tests"]
 exclude = ["src/python_project_template/__version__.py"]
 indent-width = 4
 line-length = 120
-target-version = "py313"
+target-version = "py314"
 
 [tool.ruff.lint]
 select = ["ALL"]
