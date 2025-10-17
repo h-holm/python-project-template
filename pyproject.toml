@@ -155,7 +155,7 @@ hooks = [
 source = ["src/python_project_template"]
 
 [tool.coverage.report]
-exclude_lines = ["pragma: no cover", "if __name__ == .__main__.:"]
+exclude_lines = ["pragma: no cover", "if __name__ == .__main__.:", "if TYPE_CHECKING:"]
 skip_empty = true
 
 [tool.coverage.run]

@@ -2,13 +2,16 @@
 
 import enum
 import logging
-from collections.abc import Callable
 from datetime import timedelta
 from functools import wraps
 from pathlib import Path
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
 from tabulate import tabulate
+
+
+if TYPE_CHECKING:
+    from collections.abc import Callable
 
 
 LOGGER = logging.getLogger(__name__)
