@@ -33,7 +33,6 @@ metadata.allow-direct-references = true
 [tool.hatch.env]
 requires = [
   "hatch-pip-compile~=1.11.5",
-  "pip<25.3",  # Temporary pin to avoid issues with `pip-compile` until resolved.
 ]
 
 [tool.hatch.version]
@@ -106,11 +105,11 @@ python = ["3.14"]
 extra-dependencies = [
   "mypy~=1.18.2",
   "pip~=25.3",  # To enable `mypy` to `pip install` stubs.
-  "pre-commit~=4.4.0",
+  "pre-commit~=4.5.0",
   "pydantic~=2.12.4",
   "pydantic-core~=2.41.5",
   "pytest~=9.0.1",
-  "ruff~=0.14.4",
+  "ruff~=0.14.6",
 ]
 
 [tool.hatch.envs.lint.scripts]
