@@ -35,7 +35,7 @@ repos:
         entry: hatch run lint:style
         language: system
         types_or: [python, pyi, jupyter]
-        exclude: src/python_project_template/__version__.py
+        exclude: src/hatch_python_project_template/__version__.py
         verbose: true
 
   # Instead of using the `pre-commit/mirrors-mypy` hook, use the Hatch "lint" environment. Apart from ensuring that
@@ -48,5 +48,5 @@ repos:
         entry: hatch run lint:simple-typing
         language: system
         types_or: [python, pyi, jupyter]
-        exclude: src/python_project_template/__version__.py
+        exclude: src/hatch_python_project_template/__version__.py
         verbose: true

@@ -1,4 +1,4 @@
-# Python Project Template
+# [Hatch](https://hatch.pypa.io/latest) Python Project Template
 
 [![Python 3.14](https://img.shields.io/badge/python-3.14-blue.svg)](https://docs.python.org/3/whatsnew/3.14.html)
 [![License: MIT](https://img.shields.io/badge/License-MIT-9400d3.svg)](https://opensource.org/licenses/MIT)
@@ -7,9 +7,9 @@
 [![Mypy](https://img.shields.io/badge/type%20checked-mypy-039dfc)](https://github.com/python/mypy)
 [![Pytest](https://img.shields.io/static/v1?label=‎&message=Pytest&logo=Pytest&color=b647c4&logoColor=white)](https://docs.pytest.org)
 [![pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit&logoColor=white)](https://github.com/pre-commit/pre-commit)
-[![Deploy to Cloud Run](https://github.com/h-holm/python-project-template/workflows/Deploy%20to%20Cloud%20Run/badge.svg)](https://github.com/h-holm/python-project-template/actions/workflows/deploy-to-cloud-run.yaml)
-[![CodeQL](https://github.com/h-holm/python-project-template/workflows/CodeQL%20Analysis/badge.svg)](https://github.com/h-holm/python-project-template/actions/workflows/codeql-analysis.yaml)
-[![pre-commit.ci status](https://results.pre-commit.ci/badge/github/h-holm/python-project-template/main.svg)](https://results.pre-commit.ci/latest/github/h-holm/python-project-template/main)
+[![Deploy to Cloud Run](https://github.com/h-holm/hatch-python-project-template/workflows/Deploy%20to%20Cloud%20Run/badge.svg)](https://github.com/h-holm/hatch-python-project-template/actions/workflows/deploy-to-cloud-run.yaml)
+[![CodeQL](https://github.com/h-holm/hatch-python-project-template/workflows/CodeQL%20Analysis/badge.svg)](https://github.com/h-holm/hatch-python-project-template/actions/workflows/codeql-analysis.yaml)
+[![pre-commit.ci status](https://results.pre-commit.ci/badge/github/h-holm/hatch-python-project-template/main.svg)](https://results.pre-commit.ci/latest/github/h-holm/hatch-python-project-template/main)
 
 A template repo that enables quickly setting up an end-to-end CI/CD pipeline that tests and deploys a containerized
 Python application. The placeholder Python logic computes a Fibonacci number.
@@ -28,7 +28,7 @@ Python application. The placeholder Python logic computes a Fibonacci number.
 reporting
 * [./src layout](https://packaging.python.org/en/latest/discussions/src-layout-vs-flat-layout) to separate application
 logic from tests and project metadata
-* Sane logging configured in a single [logging.conf](./src/python_project_template/logging.conf) file
+* Sane logging configured in a single [logging.conf](./src/hatch_python_project_template/logging.conf) file
 * Optional quality-of-life add-ons:
   * [pre-commit](https://github.com/pre-commit/pre-commit) hooks installable via the `hooks` script of the `lint` Hatch
   environment
@@ -67,12 +67,12 @@ Hatch.
 
 ### Running the Code
 
-Run the [main.py](./src/python_project_template/main.py) entrypoint with the `--help` flag for an explanation to the
-application logic:
+Run the [main.py](./src/hatch_python_project_template/main.py) entrypoint with the `--help` flag for an explanation to
+the application logic:
 
 ```shell
-hatch run python src/python_project_template/main.py --help          # Uses the "default" Hatch environment.
-hatch run default:python src/python_project_template/main.py --help  # Equivalent to not specifying "default:".
+hatch run python src/hatch_python_project_template/main.py --help          # Uses the "default" Hatch environment.
+hatch run default:python src/hatch_python_project_template/main.py --help  # Equivalent to not specifying "default:".
 ```
 
 ### Unit Testing
@@ -119,8 +119,8 @@ Run `hatch version` followed by the [SemVer](https://semver.org) component to bu
 hatch version patch  # Or `hatch version minor` or `hatch version major`.
 ```
 
-Commit the updated [\_\_version\_\_.py](./src/python_project_template/__version__.py) script to version control before
-creating a `git` tag. Ensure the tag has the same name as the (now bumped) version:
+Commit the updated [\_\_version\_\_.py](./src/hatch_python_project_template/__version__.py) script to version control
+before creating a `git` tag. Ensure the tag has the same name as the (now bumped) version:
 
 ```shell
 git tag -a $(hatch version) -m 'Descriptive tag message'

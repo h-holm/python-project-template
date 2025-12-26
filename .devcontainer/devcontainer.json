@@ -1,5 +1,5 @@
 {
-    "name": "Python Project Template",
+    "name": "Hatch Python Project Template",
     "build": {
         "dockerfile": "Dockerfile"
     },
