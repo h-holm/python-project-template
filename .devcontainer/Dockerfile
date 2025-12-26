@@ -1,6 +1,6 @@
 # syntax=docker.io/docker/dockerfile:1
 
-FROM ghcr.io/astral-sh/uv:python3.13-bookworm-slim
+FROM astral/uv:python3.14-bookworm-slim
 
 WORKDIR /usr/src/app
 
