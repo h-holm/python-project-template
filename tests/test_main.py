@@ -3,7 +3,7 @@ import tempfile
 import pytest
 from typer.testing import CliRunner
 
-from python_project_template.main import app, fibonacci
+from hatch_python_project_template.main import app, fibonacci
 
 
 runner = CliRunner()
